@@ -1,4 +1,4 @@
-package wilson_algoritmo;
+package Laberinto;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
