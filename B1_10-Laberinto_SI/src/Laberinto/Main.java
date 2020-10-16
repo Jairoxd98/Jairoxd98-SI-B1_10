@@ -22,31 +22,25 @@ public class Main {
                 System.out.println("Elige una opcion: ");
                 System.out.println("1. Generar laberinto");
                 System.out.println("2. Exportar imagen");
-                System.out.println("3. Importart laberinto");
+                System.out.println("3. Importar laberinto");
                 System.out.println("4. Salir");
 
                 int option = sc.nextInt();
                 switch (option) {
                     case 1:
-
-                        int filas=0;
-                    	int columnas=0;
-                    	
                         System.out.println("Elige el numero de filas");
-                        filas = sc.nextInt();
+                        int filas = sc.nextInt();
                         while(filas<=0){
-                        	System.out.println("Número de filas incorrecto, introduce un número correcto");
+                        	System.out.println("Número de filas incorrecto, introduce un número correcto\n");
                         	filas = sc.nextInt();
                         }
                         System.out.println("Elige el numero de columnas");
-                        columnas = sc.nextInt();
+                        int columnas = sc.nextInt();
                     	while(columnas<=0) {
-                    		System.out.println("Número de columnas incorrecto, introduce un número correcto");
+                    		System.out.println("Número de columnas incorrecto, introduce un número correcto\n");
                     		filas = sc.nextInt();
                     		
                     	}
-                    	System.out.println("Elige el numero de columnas");
-                        columnas = sc.nextInt();
 
                         grid = new Grid(filas, columnas);
                         grid.generateMaze();
@@ -57,7 +51,7 @@ public class Main {
                         if (grid != null) {
                             grid.exportToIMG();
                         } else {
-                            System.out.println("Debes generar el laberinto");
+                            System.out.println("Debes generar el laberinto\n");
                         }
 
                         break;
@@ -72,19 +66,21 @@ public class Main {
 
                             grid = gson.fromJson(jsonContent, Grid.class);
                             grid.generateCellsGrids();
+                            System.out.println("El laberinto del JSON se a introducido correctamente\n");
                         } catch (Exception ex) {
                         	grid=null;
-                            System.out.println("JSON no compatible");
+                            System.out.println("JSON no compatible\\n");
                         }
 
                         break;
                     case 4:
                         salir = true;
+                        System.out.println("Has salido del menu");
                         break;
                 }
 
             } catch (InputMismatchException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Introduce una opcion valida\n");
                 sc.next();
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());

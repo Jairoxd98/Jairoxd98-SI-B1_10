@@ -157,7 +157,7 @@ public class Grid {
 
     }
 
-    private Cell getCellNoBlank() {
+    /*private Cell getCellNoBlank() {
         Cell c = null;
         do {
             int row = this.generaNumeroAleatorio(0, this.rows - 1);
@@ -168,9 +168,9 @@ public class Grid {
         } while (c.isBlank());
 
         return c;
-    }
+    }*/
 
-    private Cell getCellEmpty() {
+    /*private Cell getCellEmpty() {
 
         Cell c = null;
         do {
@@ -183,6 +183,50 @@ public class Grid {
 
         return c;
 
+    }*/
+    /*
+    private Cell getCellNoBlank() {
+        Cell c = null;
+        do {
+        	c= getCell();
+        } while (c.isBlank());
+
+        return c;
+    }
+    
+    private Cell getCellEmpty() {
+
+    	Cell c = null;
+        do {        
+        	c= getCell();
+        } while (!c.isBlank());
+
+        return c;
+    }
+    */
+    
+    private Cell getCellNoBlank() {
+    	Cell c =getCellGet(true);
+    	return c;
+    }
+    
+    private Cell getCellEmpty() {
+    	Cell c =getCellGet(false);
+    	return c;
+    }
+    
+    private Cell getCellGet(boolean n) {
+    	Cell c = null;
+    	boolean blank;
+    	do {
+        	c= getCell();
+        	if(n) {
+        		blank= c.isBlank();
+        	}else {
+        		blank= !c.isBlank();
+        	}
+        } while (blank);
+    	return c;
     }
 
     private Cell getCell() {
