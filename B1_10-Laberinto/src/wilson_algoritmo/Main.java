@@ -29,10 +29,22 @@ public class Main {
                 switch (option) {
                     case 1:
 
+                        int filas=0;
+                    	int columnas=0;
+                    	
                         System.out.println("Elige el numero de filas");
-                        int filas = sc.nextInt();
-
+                        filas = sc.nextInt();
+                        while(filas<=0){
+                        	System.out.println("Número de filas incorrecto, introduce un número correcto");
+                        	filas = sc.nextInt();
+                        }
                         System.out.println("Elige el numero de columnas");
+                        columnas = sc.nextInt();
+                    	while(columnas<=0) {
+                    		System.out.println("Número de columnas incorrecto, introduce un número correcto");
+                    		filas = sc.nextInt();
+                    		
+                    	}ln("Elige el numero de columnas");
                         int columnas = sc.nextInt();
 
                         grid = new Grid(filas, columnas);
