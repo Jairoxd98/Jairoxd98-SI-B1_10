@@ -56,7 +56,7 @@ public class Main {
                     case 2: /*Opcion para generar la imagen del laberinto creado o exportado por el usuario*/
                         if (grid != null) {
                             grid.exportToIMG();
-                            System.out.println("Imágen exportada correctamente\n");
+                            System.out.println("Imagen exportada correctamente\n");
                         } else {
                             System.out.println("Debes generar el laberinto\n");
                         }
