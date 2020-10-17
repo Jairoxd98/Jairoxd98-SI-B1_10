@@ -157,32 +157,30 @@ public class Grid {
 
     }
 
+    
+    
     private Cell getCellNoBlank() {
-        Cell c = null;
-        do {
-            int row = this.generaNumeroAleatorio(0, this.rows - 1);
-            int col = this.generaNumeroAleatorio(0, this.cols - 1);
-
-            c = this.cellsGrid[row][col];
-
-        } while (c.isBlank());
-
-        return c;
+    	Cell c =getCellGet(true);
+    	return c;
     }
-
+    
     private Cell getCellEmpty() {
-
-        Cell c = null;
-        do {
-            int row = this.generaNumeroAleatorio(0, this.rows - 1);
-            int col = this.generaNumeroAleatorio(0, this.cols - 1);
-
-            c = this.cellsGrid[row][col];
-
-        } while (!c.isBlank());
-
-        return c;
-
+    	Cell c =getCellGet(false);
+    	return c;
+    }
+    
+    private Cell getCellGet(boolean n) {
+    	Cell c = null;
+    	boolean blank;
+    	do {
+        	c= getCell();
+        	if(n) {
+        		blank= c.isBlank();
+        	}else {
+        		blank= !c.isBlank();
+        	}
+        } while (blank);
+    	return c;
     }
 
     private Cell getCell() {
