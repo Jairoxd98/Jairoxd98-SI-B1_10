@@ -10,8 +10,13 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
-        Scanner sc = new Scanner(System.in);
+    	
+        menu(); /* Llamada al menu del programa */
+        
+    }
+    
+    public static void menu() {
+    	Scanner sc = new Scanner(System.in);
 
         boolean salir = false;
 
@@ -27,7 +32,7 @@ public class Main {
 
                 int option = sc.nextInt();
                 switch (option) {
-                    case 1:
+                    case 1: /*Opcion para generar el laberinto mediante los paremetros pedidos por teclado*/
                         System.out.println("Elige el numero de filas");
                         int filas = sc.nextInt();
                         while(filas<=0){
@@ -43,52 +48,56 @@ public class Main {
                     	}
 
                         grid = new Grid(filas, columnas);
-                        grid.generateMaze();
-                        grid.generateJSON();
+                        grid.generateMaze(); //Genera el laberinto
+                        grid.generateJSON(); //Genera el JSON del laberinto
+                        System.out.println("Laberinto creado correctamente, JSON creado correctamente");
 
                         break;
-                    case 2:
+                    case 2: /*Opcion para generar la imagen del laberinto creado o exportado por el usuario*/
                         if (grid != null) {
                             grid.exportToIMG();
+                            System.out.println("Imágen exportada correctamente\n");
                         } else {
                             System.out.println("Debes generar el laberinto\n");
                         }
 
                         break;
-                    case 3:
+                    case 3: /*Opcion para importar el laberinto mediante el JSON especificado por el usuario*/
 
                         try {
                             System.out.println("Indica la ruta del json");
                             String path = sc.next();
 
                             String jsonContent = getJSON(path);
-                            Gson gson = new Gson();
+                            Gson gson = new Gson(); //Extrae el contenido del JSON
 
                             grid = gson.fromJson(jsonContent, Grid.class);
-                            grid.generateCellsGrids();
-                            System.out.println("El laberinto del JSON se a introducido correctamente\n");
+                            grid.generateCellsGrids(); //Genera el laberinto mediante los datos del JSON importado 
+                            System.out.println("JSON importado correctamente\n");
                         } catch (Exception ex) {
                         	grid=null;
-                            System.out.println("JSON no compatible\\n");
+                            System.out.println("JSON no compatible\n");
                         }
 
                         break;
-                    case 4:
+                    case 4:/* Opcion para salir del programa*/
                         salir = true;
-                        System.out.println("Has salido del menu");
+                        System.out.println("Has salido del programa");
                         break;
                 }
 
-            } catch (InputMismatchException ex) {
+            } catch (InputMismatchException ex) { /* Si el usuario no introduce un entero valido salta la excepcion*/
                 System.out.println("Introduce una opcion valida\n");
                 sc.next();
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
         }
-
     }
-
+    /*
+     * Metodo getJSON
+     * Este metodo se utiliza para extraer el contenido del archivo .json a la hora de importarlo
+     */
     private static String getJSON(String ruta) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(ruta));
 

@@ -1,13 +1,16 @@
 package Laberinto;
 
 public class Cell {
-
+	/*		Clase Cell
+	 * Es una celda del laberinto.
+	 * Los atributos declarados con transient, se declaran de esta forma para que 
+	 * el JSON no los recoja a la hora de generar el archivo .json
+	 */
     transient private int x;
     transient private int y;
 
     transient private String direction;
-    transient private boolean visited;
-    transient private boolean blank;
+    transient private boolean blank;/* Especifica si la celda esta visitada o no a la hora de generar el laberinto*/
     private boolean[] neighbors;
     private int value;
 
@@ -49,14 +52,6 @@ public class Cell {
 
     public void setDirection(String direction) {
         this.direction = direction;
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
     }
 
     public boolean isBlank() {
