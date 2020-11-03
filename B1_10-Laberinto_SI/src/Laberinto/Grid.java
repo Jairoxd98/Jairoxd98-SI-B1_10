@@ -28,6 +28,7 @@ public class Grid {
     transient private Cell[][] cellsGrid; //Celdas del laberinto
     transient private int numberCells; //Numero de celdas del laberinto para saber las celdas visitadas
     private TreeMap<Object, Object> cells; //Treemap para ordenar las celdas a la hora de generar el JSON
+    //Os dais cuenta de que una matriz ya está indexada por una columna y una fila ?? por lo que habeis creado una copia del objeto CellsGrid
 
     public Grid(int rows, int cols) {
         this.rows = rows;
@@ -323,7 +324,7 @@ public class Grid {
      */
     public void exportToIMG() {
 
-        BufferedImage imagen = new BufferedImage(this.cols * 30, this.rows * 30, BufferedImage.TYPE_INT_RGB);/*Tamaño de la imagen*/
+        BufferedImage imagen = new BufferedImage(this.cols * 30, this.rows * 30, BufferedImage.TYPE_INT_RGB);/*TamaÃ±o de la imagen*/
 
         Graphics2D g = imagen.createGraphics();
 
@@ -429,5 +430,62 @@ public class Grid {
         int num = (int) (Math.random() * (minimo - (maximo + 1)) + (maximo + 1));
         return num;
     }
-
+    
+    /*Getters and Setters*/
+	public int getRows() {
+		return rows;
+	}
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+	public int getCols() {
+		return cols;
+	}
+	public void setCols(int cols) {
+		this.cols = cols;
+	}
+	public int getMax_n() {
+		return max_n;
+	}
+	public void setMax_n(int max_n) {
+		this.max_n = max_n;
+	}
+	public int[][] getMov() {
+		return mov;
+	}
+	public void setMov(int[][] mov) {
+		this.mov = mov;
+	}
+	public String[] getId_mov() {
+		return id_mov;
+	}
+	public void setId_mov(String[] id_mov) {
+		this.id_mov = id_mov;
+	}
+	public Cell[][] getCellsGrid() {
+		return cellsGrid;
+	}
+	public void setCellsGrid(Cell[][] cellsGrid) {
+		this.cellsGrid = cellsGrid;
+	}
+	public int getNumberCells() {
+		return numberCells;
+	}
+	public void setNumberCells(int numberCells) {
+		this.numberCells = numberCells;
+	}
+	public TreeMap<Object, Object> getCells() {
+		return cells;
+	}
+	public void setCells(TreeMap<Object, Object> cells) {
+		this.cells = cells;
+	}
+	
+	/*Método copiar Laberinto*/
+	public Grid copyGrid (Grid l) {
+    	Grid lc = new Grid (l.getRows(), l.getCols());
+    	System.out.println("Este metodo esta por realizar por dudas tecnicas sobre la clase");
+            	
+    	return lc;
+    }
 }
