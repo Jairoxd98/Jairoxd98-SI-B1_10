@@ -30,7 +30,7 @@ public class Main {
                 System.out.println("1. Generar laberinto");
                 System.out.println("2. Exportar imagen");
                 System.out.println("3. Importar laberinto");
-                System.out.println("4. Hito2");
+                System.out.println("4. Exportar Hito 2");
                 System.out.println("5. Salir");
 
                 int option = sc.nextInt();
@@ -85,7 +85,7 @@ public class Main {
                         break;
                         
                     case 4:
-                        Hito2(grid);
+                        exportarHito2(grid);
                         break;
                         
                     case 5:/* Opcion para salir del programa*/
@@ -118,69 +118,23 @@ public class Main {
         return json;
     }
     
-    private static ArrayList<Estado> funcionSucesores (Estado e, Grid g){
-    	
-    	ArrayList<Estado> list = new ArrayList<Estado>();
-    	
-    	if (e.getId()[0] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[0]) { //N(comprobar el estado de ir hacia el Norte)
-    		list.add(new Estado(e.getId()[0], e.getId()[1]+1, g.getId_mov()[0]));
-        }
-    	if (e.getId()[1] != g.getCols()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[1]) { //E
-    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[1]));
-        }
-    	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S
-    		list.add(new Estado(e.getId()[0], e.getId()[1]-1, g.getId_mov()[2]));
-        }
-    	if (e.getId()[0] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O
-    		list.add(new Estado(e.getId()[0]-1, e.getId()[1], g.getId_mov()[3]));
-        }
-    	return list;
-    }
-    
-    private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){ //A partir de cada estado se genera un nuevo sucesor
-    	
-    	ArrayList<Nodo> list = new ArrayList<Nodo>();
-    	
-    	for (Estado a: funcionSucesores(n.getEstado(), g)) {
-    		
-    		switch (estrategia) { /* Desde la celda acual marcamos el vecino al que va*/
-            	case "Gready":
-            		list.add(new Nodo(n, a, id, n.getCosto()+1, a.getAccion(), n.getD()+1, 0/*heuristica por definir*/, n.getD()));
-            		break;
-            	case "Deep":
-            		list.add(new Nodo(n, a, id, n.getCosto()+1, a.getAccion(), n.getD()+1, 0/*heuristica por definir*/, 1/(n.getD()+1)));
-            		break;
-            	case "Cost":
-            		list.add(new Nodo(n, a, id, n.getCosto()+1, a.getAccion(), n.getD()+1, 0/*heuristica por definir*/, n.getCosto()+1));
-            		break;
-            	case "H":
-            		list.add(new Nodo(n, a, id, n.getCosto()+1, a.getAccion(), n.getD()+1, 0/*heuristica por definir*/, n.getH()));
-            		break;
-            	case "A":
-            		list.add(new Nodo(n, a, id, n.getCosto()+1, a.getAccion(), n.getD()+1, 0/*heuristica por definir*/, n.getH()+n.getCosto()));
-            		break;
-    		}
-    		id++;
-    	}
-    	return list;
-    }
-    
-    public static void Hito2 (Grid g) {
+    public static void exportarHito2 (Grid g) { //Crea y añade nuevos nodos a la lista PriorityQueue frontera, en este caso 20
     	
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
-    	//primero fila, después columna el valor del estado
-    	for (int i = 0; i<12; i++) {
     	
-    		frontera.add(new Nodo(null, new Estado(((int) (Math.random()*4+1)), ((int) (Math.random()*4+1)), "e") , ((int) (Math.random()*10+1)), 0, "accion", 0, 0/*heuristica por definir*/, 0));
+    	for (int i = 0; i<20; i++) {
+    		frontera.add(new Nodo(null, new Estado(((int) (Math.random()*4+1)), ((int) (Math.random()*4+1)), "e") , ((int) (Math.random()*10+1)), 0, "accion", 0, 0/*heuristica por definir*/, ((int) (Math.random()*4+1))));
     	}
     	
-    	for (int i = 0; i<12; i++) {
+    	for (int i = 0; i<20; i++) {
     		
     		System.out.println(frontera.poll().toString());
     	}
     }
     
-    public static boolean esObjetivo (Nodo n, Grid g) {
+    
+    
+    public static boolean esObjetivo (Nodo n, Grid g) { // Método que se utilizará en futuras iteraciones
     	if (n.getEstado().getId()[0] == g.getRows()-1 && n.getEstado().getId()[1] == g.getCols()-1) {
     		return true;
     	} else return false;
