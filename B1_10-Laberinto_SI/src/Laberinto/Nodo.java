@@ -71,19 +71,19 @@ public class Nodo implements Comparable<Nodo> {
 		this.f = f;
 	}
 	
-	@Override
-	public int compareTo (Nodo n) {
-		if (this.getF() < n.getF()) {
+	@Override 
+	public int compareTo (Nodo n) { //ordenamos de mayor a menor valor (f)
+		if (this.getF() > n.getF()) {
 			return -1;
-		} else if (this.getF() > n.getF()) {
+		} else if (this.getF() < n.getF()) {
 			return 1;
-		} else 
-			return (this.getId() > n.getId())?1:-1;
+		} else {
+			return this.getEstado().compareTo(n.getEstado());
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "Nodo [padre=" + padre + ", estado=" + estado + ", id=" + id + ", costo=" + costo + ", accion=" + accion
-				+ ", d=" + d + ", h=" + h + ", f=" + f + "]";
+		return "Nodo ["+ id + "]["+ costo + ", ["+ estado.getId()[0] + ", "+ estado.getId()[1] + "], " + ((padre != null)?padre.getId():"null") + ", "+ accion +", "+ d +", "+ h +", "+ f +"]";
 	}
 }
