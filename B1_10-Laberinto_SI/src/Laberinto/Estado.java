@@ -8,32 +8,16 @@ public class Estado {
 	
 	private int [] id;
 	private int valor;
-	private String md5; //Le vuelve loco a Luis (Localizar nodos - una representación única de representar nodos)
+	private String md5; 
 	private String accion;
 	
-	public Estado(int x, int y, String accion) {//posición y de que accion viene el estado, subir bajar o que
-		
+	public Estado(String accion, int x, int y, int valor) {
+		this.accion = accion;
 		id = new int[2];
 		id[0] = x;
 		id[1] = y;
-		this.accion = accion;
+		this.valor=valor;
 	}
-	
-	public static String generateMD5(String id) throws NoSuchAlgorithmException { //Para poder referenciar un nodo de forma unica aunque varios tengan el mismo estado
-
-        String IdMD5;
-
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(id.getBytes());
-        byte[] digest = md.digest();
-        StringBuffer sb = new StringBuffer();
-        for (byte b : digest) {
-            sb.append(String.format("%02x", b & 0xff));
-        }
-        IdMD5 = sb.toString();
-
-        return IdMD5;
-    }
 
 	public int[] getId() {
 		return id;
@@ -71,6 +55,36 @@ public class Estado {
 	public String toString() {
 		return "Estado [id=" + Arrays.toString(id) + ", valor=" + valor + ", md5=" + md5 + ", accion=" + accion + "]";
 	}
+	/*
+	 * Metodo compareTo
+	 * 	Metodo para comparar la id del estado compuesta por (x,y). Lo utilizamos para ordenar por (fila, columna)
+	 */
+	public int compareTo (Estado e) {
+		if (this.getId()[0] < e.getId()[0]) {
+			return -1;
+		} else if (this.getId()[0] > e.getId()[0]) {
+			return 1;
+		} else 
+			return (this.getId()[1] > e.getId()[1])?1:-1;
+	}
 	
-	
+	/*
+	 * Metodo generateMD5
+	 * Se utiliza para poder referenciar un nodo de forma unica aunque varios tengan el mismo estado
+	 */
+	public static String generateMD5(String id) throws NoSuchAlgorithmException { 
+
+        String IdMD5;
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(id.getBytes());
+        byte[] digest = md.digest();
+        StringBuffer sb = new StringBuffer();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b & 0xff));
+        }
+        IdMD5 = sb.toString();
+
+        return IdMD5;
+    }
 }

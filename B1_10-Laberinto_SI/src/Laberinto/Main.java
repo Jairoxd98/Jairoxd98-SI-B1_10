@@ -1,6 +1,8 @@
 package Laberinto;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -67,14 +69,11 @@ public class Main {
                         break;
                     case 3: /*Opcion para importar el laberinto mediante el JSON especificado por el usuario*/
 
-                        try {
-                            System.out.println("Indica la ruta del json");
-                            String path = sc.next();
+                    	try {
+                            String jsonContent = getJSON(askJSON()); 
+                            Gson gson = new Gson(); 
 
-                            String jsonContent = getJSON(path);
-                            Gson gson = new Gson(); //Extrae el contenido del JSON
-
-                            grid = gson.fromJson(jsonContent, Grid.class);
+                            grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
                             grid.generateCellsGrids(); //Genera el laberinto mediante los datos del JSON importado 
                             System.out.println("JSON importado correctamente\n");
                         } catch (Exception ex) {
@@ -84,8 +83,30 @@ public class Main {
 
                         break;
                         
-                    case 4:
-                        exportarHito2(grid);
+                    case 4: /*Opcion para crear la fontera y sus nodos mediante un .json*/
+                    	
+                    	String jsonCont = getJSON(askJSON()); //Obtenemos el contenido del JSON
+                        
+                        JsonParser parser = new JsonParser();
+                        JsonObject gsonObj = parser.parse(jsonCont).getAsJsonObject();
+
+                        String initial = gsonObj.get("INITIAL").getAsString();  //Nodo Inicio
+                        String objective = gsonObj.get("OBJETIVE").getAsString();  //Nodo Objetivo
+                        String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
+                        
+                        try {
+                            String jsonContent = getJSON("src//Laberinto//"+maze);/* PONER DONDE SE ENCUENTRA */ 
+                            Gson gson = new Gson(); 
+
+                            grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
+                            grid.generateCellsGrids(); //Genera el laberinto mediante los datos del JSON importado 
+                            System.out.println("JSON importado correctamente\n");
+                        } catch (Exception ex) {
+                        	grid=null;
+                            System.out.println("JSON no compatible\n");
+                        }
+                    	System.out.println(initial+" "+objective+" "+maze);
+                        generarFrontera(grid); 
                         break;
                         
                     case 5:/* Opcion para salir del programa*/
@@ -102,6 +123,7 @@ public class Main {
             }
         }
     }
+    
     /*
      * Metodo getJSON
      * Este metodo se utiliza para extraer el contenido del archivo .json a la hora de importarlo
@@ -118,12 +140,27 @@ public class Main {
         return json;
     }
     
-    public static void exportarHito2 (Grid g) { //Crea y añade nuevos nodos a la lista PriorityQueue frontera, en este caso 20
+    /*
+     * Metodo askJSON
+     * Metodo auxiliar para preguntar la ruta del JSON
+     */
+    private static String askJSON() {
+    	Scanner s = new Scanner(System.in);
+    	System.out.println("Indica la ruta del archivo .json");
+        String path = s.next();
+    	return path;
+    }
+    
+    /*
+     * Metodo generarFrontera
+     * Este metodo se utiliza para crearla frontera, y añadir nuevos nodos a la lista PriorityQueue de la frontera
+     */
+    public static void generarFrontera (Grid g) { //
     	
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	
     	for (int i = 0; i<20; i++) {
-    		frontera.add(new Nodo(null, new Estado(((int) (Math.random()*4+1)), ((int) (Math.random()*4+1)), "e") , ((int) (Math.random()*10+1)), 0, "accion", 0, 0/*heuristica por definir*/, ((int) (Math.random()*4+1))));
+    		frontera.add(new Nodo(null, new Estado("e", ((int) (Math.random()*4+1)), ((int) (Math.random()*4+1)), 1) , ((int) (Math.random()*10+1)), 0, "accion", 0, 0/*heuristica por definir*/, ((int) (Math.random()*4+1))));
     	}
     	
     	for (int i = 0; i<20; i++) {
@@ -132,11 +169,36 @@ public class Main {
     	}
     }
     
-    
-    
-    public static boolean esObjetivo (Nodo n, Grid g) { // Método que se utilizará en futuras iteraciones
+    /*
+     * Metodo funcionSucesores
+     * Este metodo se utiliza para crear una lista de sucesores ordenada por la posición de los vecinos ['N','E','S','O']
+     */
+    private static ArrayList<Estado> funcionSucesores (Estado e, Grid g){
+    	
+    	ArrayList<Estado> list = new ArrayList<Estado>();
+    	
+    	if (e.getId()[0] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[0]) { //N (comprobar el estado de ir hacia el Norte)
+    		list.add(new Estado(g.getId_mov()[0], e.getId()[0], e.getId()[1]+1, 1));
+        }
+    	if (e.getId()[1] != g.getCols()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[1]) { //E (comprobar el estado de ir hacia el Este)
+    		list.add(new Estado(g.getId_mov()[1], e.getId()[0]+1, e.getId()[1], 1));
+        }
+    	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S (comprobar el estado de ir hacia el Sur)
+    		list.add(new Estado(g.getId_mov()[2], e.getId()[0], e.getId()[1]-1, 1));
+        }
+    	if (e.getId()[0] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O (comprobar el estado de ir hacia el Oeste)
+    		list.add(new Estado(g.getId_mov()[3], e.getId()[0]-1, e.getId()[1], 1));
+        }
+    	return list;
+    }
+    /*
+     * Metodo esObjetivo
+     * Metodo que se utiliza para comprobar que hemos llegado al nodo final correcto
+     */
+    public static boolean esObjetivo (Nodo n, Grid g) { 
     	if (n.getEstado().getId()[0] == g.getRows()-1 && n.getEstado().getId()[1] == g.getCols()-1) {
     		return true;
     	} else return false;
     }
+    
 }

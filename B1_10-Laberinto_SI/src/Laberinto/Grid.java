@@ -53,6 +53,57 @@ public class Grid {
         this.init();
 
     }
+    
+    /*Getters and Setters*/
+	public int getRows() {
+		return rows;
+	}
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+	public int getCols() {
+		return cols;
+	}
+	public void setCols(int cols) {
+		this.cols = cols;
+	}
+	public int getMax_n() {
+		return max_n;
+	}
+	public void setMax_n(int max_n) {
+		this.max_n = max_n;
+	}
+	public int[][] getMov() {
+		return mov;
+	}
+	public void setMov(int[][] mov) {
+		this.mov = mov;
+	}
+	public String[] getId_mov() {
+		return id_mov;
+	}
+	public void setId_mov(String[] id_mov) {
+		this.id_mov = id_mov;
+	}
+	public Cell[][] getCellsGrid() {
+		return cellsGrid;
+	}
+	public void setCellsGrid(Cell[][] cellsGrid) {
+		this.cellsGrid = cellsGrid;
+	}
+	public int getNumberCells() {
+		return numberCells;
+	}
+	public void setNumberCells(int numberCells) {
+		this.numberCells = numberCells;
+	}
+	public TreeMap<Object, Object> getCells() {
+		return cells;
+	}
+	public void setCells(TreeMap<Object, Object> cells) {
+		this.cells = cells;
+	}
+    
     /*
      * Metodo init
      * Su funcion es generar todas las celdas del laberinto 
@@ -431,61 +482,4 @@ public class Grid {
         return num;
     }
     
-    /*Getters and Setters*/
-	public int getRows() {
-		return rows;
-	}
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
-	public int getCols() {
-		return cols;
-	}
-	public void setCols(int cols) {
-		this.cols = cols;
-	}
-	public int getMax_n() {
-		return max_n;
-	}
-	public void setMax_n(int max_n) {
-		this.max_n = max_n;
-	}
-	public int[][] getMov() {
-		return mov;
-	}
-	public void setMov(int[][] mov) {
-		this.mov = mov;
-	}
-	public String[] getId_mov() {
-		return id_mov;
-	}
-	public void setId_mov(String[] id_mov) {
-		this.id_mov = id_mov;
-	}
-	public Cell[][] getCellsGrid() {
-		return cellsGrid;
-	}
-	public void setCellsGrid(Cell[][] cellsGrid) {
-		this.cellsGrid = cellsGrid;
-	}
-	public int getNumberCells() {
-		return numberCells;
-	}
-	public void setNumberCells(int numberCells) {
-		this.numberCells = numberCells;
-	}
-	public TreeMap<Object, Object> getCells() {
-		return cells;
-	}
-	public void setCells(TreeMap<Object, Object> cells) {
-		this.cells = cells;
-	}
-	
-	/*Método copiar Laberinto*/
-	public Grid copyGrid (Grid l) {
-    	Grid lc = new Grid (l.getRows(), l.getCols());
-    	System.out.println("Este metodo esta por realizar por dudas tecnicas sobre la clase");
-            	
-    	return lc;
-    }
 }
