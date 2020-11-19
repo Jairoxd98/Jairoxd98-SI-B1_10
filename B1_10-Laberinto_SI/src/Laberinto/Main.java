@@ -260,19 +260,19 @@ public class Main {
     		
     		switch (estrategia) { /* Desde la celda acual marcamos el vecino al que va*/
             	case "BREADTH":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, funcionHeuristica(a, g), n.getD()));
             		break;
             	case "DEPTH":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/(n.getD()+1)));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, funcionHeuristica(a, g), 1/(n.getD()+1)));
             		break;
             	case "UNIFORM":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getCosto()+1));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, funcionHeuristica(a, g), n.getCosto()+1));
             		break;
             	case "GREEDY":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, funcionHeuristica(a, g), n.getH()));
             		break;
             	case "A":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()+n.getCosto()));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, funcionHeuristica(a, g), n.getH()+n.getCosto()));
             		break;
     		}
     		id++;
@@ -289,7 +289,7 @@ public class Main {
     		return true;
     	} else return false;
     }
-    public static int calcularHeuristica (Estado e, Grid g) {
+    public static int funcionHeuristica (Estado e, Grid g) {
     	return (g.getRows()-e.getId()[0])+(g.getCols()-e.getId()[1]);
     }
     public static Nodo copiarNodo (Nodo n) {
