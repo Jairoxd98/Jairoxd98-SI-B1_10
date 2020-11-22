@@ -481,20 +481,4 @@ public class Grid {
 	public void setCells(TreeMap<Object, Object> cells) {
 		this.cells = cells;
 	}
-	
-	/*M�todo copiar Laberinto*/
-	public Grid copyGrid (Grid l) {
-    	Grid lc = new Grid (l.getRows(), l.getCols());
-    	System.out.println("Este metodo esta por realizar por dudas tecnicas sobre la clase");
-        /*private int rows;
-        private int cols;
-        private int max_n; //Numero maximo de movimientos y vecinos que puede tener la celda del laberinto
-        private int[][] mov;
-        private String[] id_mov;
-        transient private Cell[][] cellsGrid; //Celdas del laberinto
-        transient private int numberCells; //Numero de celdas del laberinto para saber las celdas visitadas (variable Local mejor)
-        private TreeMap<Object, Object> cells; //Treemap para ordenar las celdas a la hora de generar el JSON*/
-    	
-    	return lc;
-    }
 }
