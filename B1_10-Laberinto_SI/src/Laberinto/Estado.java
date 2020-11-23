@@ -8,10 +8,10 @@ public class Estado {
 	
 	private int [] id;
 	private int valor;
-	private String md5; //Localizar nodos - una representaci�n �nica de representar nodos
+	private String md5; //Localizar nodos - una representacion unica de representar nodos
 	private String accion;
 	
-	public Estado(int x, int y, String accion, int valor) {//posici�n y de que accion viene el estado, subir bajar o que
+	public Estado(int x, int y, String accion, int valor) {//posicion y de que accion viene el estado, subir bajar o que
 		
 		id = new int[2];
 		id[0] = x;
@@ -80,5 +80,14 @@ public class Estado {
 			return 1;
 		} else 
 			return (this.getId()[1] > e.getId()[1])?1:-1;
+	}
+	
+	/*public boolean equals(Object e) {
+		return (this.getId()[0] == ((Estado)e).getId()[0] && this.getId()[1] == ((Estado)e).getId()[1]);
+	}*/
+	
+	public boolean equals (Object o) {
+	    Estado x = (Estado) o;
+	    return (this.getId()[0] == x.getId()[0] && this.getId()[1] == x.getId()[1]);
 	}
 }

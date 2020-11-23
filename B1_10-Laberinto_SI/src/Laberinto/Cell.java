@@ -17,7 +17,7 @@ public class Cell {
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        this.value = (int)(Math.random()*4);
+        this.value = (int)(Math.random()*3);
         this.blank = true;
         this.neighbors = new boolean[4];
     }
@@ -25,7 +25,7 @@ public class Cell {
     public Cell(int x, int y, boolean blank) {
         this.x = x;
         this.y = y;
-        this.value = (int)(Math.random()*4);
+        this.value = (int)(Math.random()*3);
         this.blank = blank;
         this.neighbors = new boolean[4];
     }

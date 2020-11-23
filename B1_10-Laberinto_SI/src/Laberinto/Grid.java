@@ -3,7 +3,9 @@ package Laberinto;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -332,6 +334,25 @@ public class Grid {
         for (int i = 0; i < this.cellsGrid.length; i++) { /* Recorremos las celads del laberinto */
             for (int j = 0; j < this.cellsGrid[0].length; j++) {
                 boolean[] n = this.cellsGrid[i][j].getNeighbors(); /*Cogemos los vecinos de la celda*/
+                
+                switch(this.cellsGrid[i][j].getValue()) {
+	                case 0:
+	                	g.setColor(Color.gray);
+	                	break;
+	                case 1:
+	                	g.setColor(new Color(153, 102, 0));
+	                	break;
+	                case 2:
+	                	g.setColor(new Color(0, 153, 0));
+	                	break;
+	                case 3:
+	                	g.setColor(Color.blue);
+	                	break;
+	            }
+	            
+	            g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
+	            g.setColor(Color.white);
+                
                 /*Si tiene un muro en el Norte seleccionamos el punto de la esquina superior izquierda de la celda y el de la esquina superior derecha y pintamos una linea entre ellos */
                 if (!n[0]) { 
                     g.drawLine((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
@@ -481,4 +502,20 @@ public class Grid {
 	public void setCells(TreeMap<Object, Object> cells) {
 		this.cells = cells;
 	}
+	
+	/*M�todo copiar Laberinto*/
+	public Grid copyGrid (Grid l) {
+    	Grid lc = new Grid (l.getRows(), l.getCols());
+    	System.out.println("Este metodo esta por realizar por dudas tecnicas sobre la clase");
+        /*private int rows;
+        private int cols;
+        private int max_n; //Numero maximo de movimientos y vecinos que puede tener la celda del laberinto
+        private int[][] mov;
+        private String[] id_mov;
+        transient private Cell[][] cellsGrid; //Celdas del laberinto
+        transient private int numberCells; //Numero de celdas del laberinto para saber las celdas visitadas (variable Local mejor)
+        private TreeMap<Object, Object> cells; //Treemap para ordenar las celdas a la hora de generar el JSON*/
+    	
+    	return lc;
+    }
 }
