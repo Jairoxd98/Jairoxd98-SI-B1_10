@@ -111,8 +111,36 @@ public class Main {
                         generarFrontera(grid); 
                         break;
                         
-                    case 5:/* */
-                    	busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
+                    case 5:/* Opcion para generar el camino con las diferente heuristicas*/
+                    	boolean seguir = true;
+                    	do {
+                			System.out.println("\nElija la estrategia para implementar el problema\n1. Profundidad"
+                					+ "\n2. Anchura\n3. Costo Uniforme\n4. Busqueda Voraz\n5. Busqueda A*\n6. Salir");
+                			option = sc.nextInt();
+                			switch (option) {
+                			case 1:
+                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
+                				break;
+                			case 2:
+                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000);
+                				break;
+                			case 3:
+                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000);
+                				break;
+                			case 4:
+                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000);
+                				break;
+                			case 5:
+                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000);
+                				break;
+                			case 6:
+                				seguir = false;
+                				break;
+                			default:
+                				System.out.println("Opcion erronea ");
+                				break;
+                			}
+                		} while (seguir);
                     	break;
                         
                     case 6:/* Opcion para salir del programa*/
@@ -162,15 +190,15 @@ public class Main {
      * Este metodo se utiliza para crearla frontera, y añadir nuevos nodos a la lista PriorityQueue de la frontera
      */
     public static void generarFrontera (Grid g) { //
-    	//PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
+    	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	
     	for (int i = 0; i<20; i++) {
-    		//frontera.add(new Nodo(null, new Estado("e", ((int) (Math.random()*4+1)), ((int) (Math.random()*4+1)), 1) , ((int) (Math.random()*10+1)), 0, "accion", 0, 0/*heuristica por definir*/, ((int) (Math.random()*4+1))));
+    		frontera.add(new Nodo(null, new Estado(((int) (Math.random()*4+1)), ((int) (Math.random()*4+1)),"e",  1) , ((int) (Math.random()*10+1)), 0, "accion", 0, 0/*heuristica por definir*/, ((int) (Math.random()*4+1))));
     	}
     	
     	for (int i = 0; i<20; i++) {
     		
-    		//System.out.println(frontera.poll().toString());
+    		System.out.println(frontera.poll().toString());
     	}
     }
     
@@ -226,31 +254,8 @@ public class Main {
 	    	}
     	} return null;
     }
-    
-    /*
-     * Metodo funcionSucesores
-     * Este metodo se utiliza para crear una lista de sucesores ordenada por la posición de los vecinos ['N','E','S','O']
-     */
-    /*private static ArrayList<Estado> funcionSucesores (Estado e, Grid g){
-    	
-    	ArrayList<Estado> list = new ArrayList<Estado>();
-    	
-    	if (e.getId()[0] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[0]) { //N (comprobar el estado de ir hacia el Norte)
-    		list.add(new Estado(g.getId_mov()[0], e.getId()[0], e.getId()[1]+1, 1));
-        }
-    	if (e.getId()[1] != g.getCols()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[1]) { //E (comprobar el estado de ir hacia el Este)
-    		list.add(new Estado(g.getId_mov()[1], e.getId()[0]+1, e.getId()[1], 1));
-        }
-    	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S (comprobar el estado de ir hacia el Sur)
-    		list.add(new Estado(g.getId_mov()[2], e.getId()[0], e.getId()[1]-1, 1));
-        }
-    	if (e.getId()[0] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O (comprobar el estado de ir hacia el Oeste)
-    		list.add(new Estado(g.getId_mov()[3], e.getId()[0]-1, e.getId()[1], 1));
-        }
-    	return list;
-    }*/
-    
-    private static ArrayList<Estado> funcionSucesores (Estado e, Grid g){ //Este metodo se utilizara para Hitos posteriores.
+  
+    private static ArrayList<Estado> funcionSucesores (Estado e, Grid g){
     	
     	ArrayList<Estado> list = new ArrayList<Estado>();
     	
@@ -269,7 +274,7 @@ public class Main {
     	return list;
     }
     
-private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){ //Este metodo se utilizara para Hitos posteriores. A partir de cada estado se genera un nuevo sucesor
+private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){// A partir de cada estado se genera un nuevo sucesor
     	
     	ArrayList<Nodo> list = new ArrayList<Nodo>();
     	
@@ -277,7 +282,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
     		
     		//System.out.println("\t" + a.toString());
     		
-    		switch (estrategia) { /* Desde la celda acual marcamos el vecino al que va*/
+    		switch (estrategia) { 
             	case "BREADTH":
             		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()));
             		break;
@@ -303,7 +308,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
      * Metodo esObjetivo
      * Metodo que se utiliza para comprobar que hemos llegado al nodo final correcto
      */
-	public static boolean esObjetivo (Nodo n, Grid g) { // Metodo que se utilizara en futuras iteraciones
+	public static boolean esObjetivo (Nodo n, Grid g) { 
 		if (n.getEstado().getId()[0] == g.getRows()-1 && n.getEstado().getId()[1] == g.getCols()-1) {
 			return true;
 		} else return false;

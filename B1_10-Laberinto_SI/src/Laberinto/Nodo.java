@@ -88,11 +88,7 @@ public class Nodo implements Comparable<Nodo> {
 		return "Nodo ["+ id + "]["+ costo + ", ["+ estado.getId()[0] + ", "+ estado.getId()[1] + "], " + ((padre != null)?padre.getId():"null") + ", "+ accion +", "+ d +", "+ h +", "+ f +"]";
 	}
 	
-	/*public boolean equals(Nodo n) {
-		return this.getEstado().equals(n.getEstado());
-	}*/
-	
-	public boolean equals(Object o) {//no interpretaba bien, ya está arreglado
+	public boolean equals(Object o) {
 	    Nodo x = (Nodo) o;
 	    return (this.getEstado().equals(x.getEstado()));
 	}

@@ -56,6 +56,57 @@ public class Grid {
         this.init();
 
     }
+    
+    /*Getters and Setters*/
+	public int getRows() {
+		return rows;
+	}
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+	public int getCols() {
+		return cols;
+	}
+	public void setCols(int cols) {
+		this.cols = cols;
+	}
+	public int getMax_n() {
+		return max_n;
+	}
+	public void setMax_n(int max_n) {
+		this.max_n = max_n;
+	}
+	public int[][] getMov() {
+		return mov;
+	}
+	public void setMov(int[][] mov) {
+		this.mov = mov;
+	}
+	public String[] getId_mov() {
+		return id_mov;
+	}
+	public void setId_mov(String[] id_mov) {
+		this.id_mov = id_mov;
+	}
+	public Cell[][] getCellsGrid() {
+		return cellsGrid;
+	}
+	public void setCellsGrid(Cell[][] cellsGrid) {
+		this.cellsGrid = cellsGrid;
+	}
+	public int getNumberCells() {
+		return numberCells;
+	}
+	public void setNumberCells(int numberCells) {
+		this.numberCells = numberCells;
+	}
+	public TreeMap<Object, Object> getCells() {
+		return cells;
+	}
+	public void setCells(TreeMap<Object, Object> cells) {
+		this.cells = cells;
+	}
+    
     /*
      * Metodo init
      * Su funcion es generar todas las celdas del laberinto 
@@ -335,17 +386,17 @@ public class Grid {
             for (int j = 0; j < this.cellsGrid[0].length; j++) {
                 boolean[] n = this.cellsGrid[i][j].getNeighbors(); /*Cogemos los vecinos de la celda*/
                 
-                switch(this.cellsGrid[i][j].getValue()) {
-	                case 0:
+                switch(this.cellsGrid[i][j].getValue()) { /* Segun el valor de la celda pintamos la celda de un color */
+	                case 0: //Asfalto
 	                	g.setColor(Color.gray);
 	                	break;
-	                case 1:
+	                case 1: //Tierra
 	                	g.setColor(new Color(153, 102, 0));
 	                	break;
-	                case 2:
+	                case 2: //Hierba
 	                	g.setColor(new Color(0, 153, 0));
 	                	break;
-	                case 3:
+	                case 3: //Agua
 	                	g.setColor(Color.blue);
 	                	break;
 	            }
@@ -453,69 +504,6 @@ public class Grid {
         return num;
     }
     
-    /*Getters and Setters*/
-	public int getRows() {
-		return rows;
-	}
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
-	public int getCols() {
-		return cols;
-	}
-	public void setCols(int cols) {
-		this.cols = cols;
-	}
-	public int getMax_n() {
-		return max_n;
-	}
-	public void setMax_n(int max_n) {
-		this.max_n = max_n;
-	}
-	public int[][] getMov() {
-		return mov;
-	}
-	public void setMov(int[][] mov) {
-		this.mov = mov;
-	}
-	public String[] getId_mov() {
-		return id_mov;
-	}
-	public void setId_mov(String[] id_mov) {
-		this.id_mov = id_mov;
-	}
-	public Cell[][] getCellsGrid() {
-		return cellsGrid;
-	}
-	public void setCellsGrid(Cell[][] cellsGrid) {
-		this.cellsGrid = cellsGrid;
-	}
-	public int getNumberCells() {
-		return numberCells;
-	}
-	public void setNumberCells(int numberCells) {
-		this.numberCells = numberCells;
-	}
-	public TreeMap<Object, Object> getCells() {
-		return cells;
-	}
-	public void setCells(TreeMap<Object, Object> cells) {
-		this.cells = cells;
-	}
+    
 	
-	/*M�todo copiar Laberinto*/
-	public Grid copyGrid (Grid l) {
-    	Grid lc = new Grid (l.getRows(), l.getCols());
-    	System.out.println("Este metodo esta por realizar por dudas tecnicas sobre la clase");
-        /*private int rows;
-        private int cols;
-        private int max_n; //Numero maximo de movimientos y vecinos que puede tener la celda del laberinto
-        private int[][] mov;
-        private String[] id_mov;
-        transient private Cell[][] cellsGrid; //Celdas del laberinto
-        transient private int numberCells; //Numero de celdas del laberinto para saber las celdas visitadas (variable Local mejor)
-        private TreeMap<Object, Object> cells; //Treemap para ordenar las celdas a la hora de generar el JSON*/
-    	
-    	return lc;
-    }
 }
