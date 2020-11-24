@@ -29,11 +29,11 @@ public class Main {
         while (!salir) {
 
             try {
-            	System.out.println("\n"+"Elige una opcion: ");
+            	System.out.println("Elige una opcion: ");
                 System.out.println("\t"+"1. Generar laberinto");
                 System.out.println("\t"+"2. Exportar imagen");
                 System.out.println("\t"+"3. Importar laberinto");
-                System.out.println("\t"+"4. Exportar Hito 2");
+                System.out.println("\t"+"4. Importar JSON");
                 System.out.println("\t"+"5. Encontrar una Solución mediante Árbol de Búsqueda");
                 System.out.println("\t"+"6. Salir"+"\n");
 
@@ -97,7 +97,7 @@ public class Main {
                         String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
                         
                         try {
-                            String jsonContent = getJSON("B1_10-Laberinto_SI//src//Laberinto//"+maze);/* PONER DONDE SE ENCUENTRA */ 
+                            String jsonContent = getJSON("src//Laberinto//"+maze);/* PONER DONDE SE ENCUENTRA */ 
                             Gson gson = new Gson();
 
                             grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
@@ -107,30 +107,36 @@ public class Main {
                         	grid=null;
                             System.out.println("JSON no compatible\n");
                         }
+                        /*//Hito 2
                     	System.out.println(initial+" "+objective+" "+maze);
-                        generarFrontera(grid); 
+                        generarFrontera(grid);*/ 
                         break;
                         
                     case 5:/* Opcion para generar el camino con las diferente heuristicas*/
                     	boolean seguir = true;
                     	do {
-                			System.out.println("\nElija la estrategia para implementar el problema\n1. Profundidad"
-                					+ "\n2. Anchura\n3. Costo Uniforme\n4. Busqueda Voraz\n5. Busqueda A*\n6. Salir");
+                			System.out.println("\nElija la estrategia para implementar el problema\n1. Anchura"
+                					+ "\n2. Profundidad\n3. Costo Uniforme\n4. Busqueda Voraz\n5. Busqueda A*\n6. Salir");
                 			option = sc.nextInt();
                 			switch (option) {
                 			case 1:
-                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
-                				break;
-                			case 2:
+                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
                 				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000);
                 				break;
+                			case 2:
+                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
+                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
+                				break;
                 			case 3:
+                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
                 				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000);
                 				break;
                 			case 4:
+                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
                 				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000);
                 				break;
                 			case 5:
+                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
                 				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000);
                 				break;
                 			case 6:
