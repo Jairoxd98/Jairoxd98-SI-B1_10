@@ -117,7 +117,7 @@ public class Main {
                         //generarFrontera(grid);
                         break;
                         
-                    case 5:/* Opcion para generar el camino con las diferente heuristicas*/
+                    case 5:/* Opcion para encontrrar una solucion con las diferente heuristicas*/
                     	boolean seguir = true;
                     	do {
                 			System.out.println("\nElija la estrategia para implementar el problema\n1. Anchura"
@@ -126,23 +126,23 @@ public class Main {
                 			switch (option) {
                 			case 1:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000,objetivo);
                 				break;
                 			case 2:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000,objetivo);
                 				break;
                 			case 3:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000,objetivo);
                 				break;
                 			case 4:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000,objetivo);
                 				break;
                 			case 5:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000,objetivo);
                 				break;
                 			case 6:
                 				seguir = false;
@@ -232,7 +232,11 @@ public class Main {
     	}
     }
     
-    public static ArrayList<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota){
+    /*
+     * Metodo Busqueda 
+     * Se utiliza para realizar un arbol de busqueda con diferentes estrategias 
+     */
+    public static ArrayList<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota, int []objetivo){
     	
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	ArrayList<Nodo> visitados = new ArrayList<Nodo>();
@@ -247,7 +251,7 @@ public class Main {
     	id++;//al ya hacer el id 0, el siguiente será el id 1
     	frontera.add(nodo); //añadimos el nodo inicial
     	
-    	while (!frontera.isEmpty() && !esObjetivo(frontera.peek(), g)) { //no voy a tratar de buscar si ya he mirado en todo, o si ya he encontrado la solución
+    	while (!frontera.isEmpty() && !esObjetivo(frontera.peek(), objetivo)) { //no voy a tratar de buscar si ya he mirado en todo, o si ya he encontrado la solución
     		
     		//System.out.println(frontera.peek().toString());
     		nodo = frontera.poll();//porque el peek, no lo sacamos, y con poll, lo sacamos y eliminamos de la frontera para no tener que volverlo a mirar
@@ -270,10 +274,10 @@ public class Main {
     		System.out.println("Fin de Visitados");*/
     	}
     	if (!frontera.isEmpty()){ //comprobamos si hay solucion o no
-    		if (esObjetivo(frontera.peek(), g)) { //si es solucion entonces procedemos a coger la informacion y a mostrarla (mejor sacar del metodo)
+    		if (esObjetivo(frontera.peek(), objetivo)) { //si es solucion entonces procedemos a coger la informacion y mostrarla 
 	    		nodo = frontera.peek();
 	    		ArrayList<Nodo> solucion = new ArrayList<Nodo>();
-	    		while(nodo.getPadre()!=null) { //me vas cogiendo el nodo actual y me lo metes como parte de la solucion, y me indicas de donde viene este nodo
+	    		while(nodo.getPadre()!=null) { //vas cogiendo el nodo actual y lo metes como parte de la solucion
 	    			System.out.println("\t" + nodo.toString());
 	    			solucion.add(copiarNodo(nodo));
 	    			nodo = nodo.getPadre();
@@ -284,7 +288,11 @@ public class Main {
 	    	}
     	} return null;
     }
-  
+    
+    /*
+     * Metodo funcionSucesores
+     * Este metodo comprueba el estado de poder ir hacia los diferentes vecinios que tiene y devuelve los possibles vecinos sucesores del estado pasado por parametros
+     */
     private static ArrayList<Estado> funcionSucesores (Estado e, Grid g){
     	
     	ArrayList<Estado> list = new ArrayList<Estado>();
@@ -303,14 +311,16 @@ public class Main {
         }
     	return list;
     }
-    
-private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){// A partir de cada estado se genera un nuevo sucesor
+
+/*
+ * Metodo nodoSucesores 
+ * A apartir de cada estado comprueba los posibles sucesores y los genera dependiendo de la heuristica seleccionado     
+ */
+private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){
     	
     	ArrayList<Nodo> list = new ArrayList<Nodo>();
     	
     	for (Estado a: funcionSucesores(n.getEstado(), g)) {
-    		
-    		//System.out.println("\t" + a.toString());
     		
     		switch (estrategia) { 
             	case "BREADTH":
@@ -338,14 +348,30 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
      * Metodo esObjetivo
      * Metodo que se utiliza para comprobar que hemos llegado al nodo final correcto
      */
-	public static boolean esObjetivo (Nodo n, Grid g) { 
+	/*public static boolean esObjetivo (Nodo n, Grid g) { 
 		if (n.getEstado().getId()[0] == g.getRows()-1 && n.getEstado().getId()[1] == g.getCols()-1) {
 			return true;
 		} else return false;
+	}*/
+	public static boolean esObjetivo (Nodo n, int []objetivo) { 
+		if (n.getEstado().getId()[0] == objetivo[0] && n.getEstado().getId()[1] == objetivo[1]) {
+			return true;
+		} else return false;
 	}
+	
+	/*
+	 * Metodo calcularHeuristica
+	 * Metodo que se utiliza para calcular la Heuristica como la distancia manhattan:
+	 * Heurística((fila,columna))= |fila-fila_objetivo| + |columna-columna_objetivo|
+	 */
 	public static int calcularHeuristica (Estado e, Grid g) {
 		return (g.getRows()-e.getId()[0])+(g.getCols()-e.getId()[1]);
 	}
+	/*
+	 * Metodo copiarNodo
+	 * Este metodo se utiliza para realizar copias de los nodos a la hora de interactuar con ellos 
+	 * en el metodo "busqueda" y asi evitar problemas 
+	 */
 	public static Nodo copiarNodo (Nodo n) {
 		Nodo nCopia = new Nodo(n.getPadre(), n.getEstado(), n.getId(), n.getCosto(), n.getAccion(), n.getD(), n.getH(), n.getF());
 		return nCopia;
