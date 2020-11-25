@@ -37,7 +37,7 @@ public class Main {
                 System.out.println("\t"+"2. Exportar imagen");
                 System.out.println("\t"+"3. Importar laberinto");
                 System.out.println("\t"+"4. Importar JSON");
-                System.out.println("\t"+"5. Encontrar una Solución mediante Árbol de Búsqueda");
+                System.out.println("\t"+"5. Encontrar una solución mediante Árbol de Búsqueda");
                 System.out.println("\t"+"6. Salir"+"\n");
 
                 int option = sc.nextInt();
@@ -217,7 +217,7 @@ public class Main {
     
     /*
      * Metodo generarFrontera
-     * Este metodo se utiliza para crearla frontera, y añadir nuevos nodos a la lista PriorityQueue de la frontera
+     * Este metodo se utiliza para crearla frontera, y aÃ±adir nuevos nodos a la lista PriorityQueue de la frontera
      */
     public static void generarFrontera (Grid g) { //
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
@@ -248,14 +248,14 @@ public class Main {
     		nodo = new Nodo(null, inicial, id, 0, null, 0, 0, 1);
     	} else nodo = new Nodo(null, inicial, id, 0, null, 0, 0, 0);//resto de casos
     	
-    	id++;//al ya hacer el id 0, el siguiente será el id 1
-    	frontera.add(nodo); //añadimos el nodo inicial
+    	id++;//al ya hacer el id 0, el siguiente serÃ¡ el id 1
+    	frontera.add(nodo); //aÃ±adimos el nodo inicial
     	
-    	while (!frontera.isEmpty() && !esObjetivo(frontera.peek(), objetivo)) { //no voy a tratar de buscar si ya he mirado en todo, o si ya he encontrado la solución
+    	while (!frontera.isEmpty() && !esObjetivo(frontera.peek(), objetivo)) { //no voy a tratar de buscar si ya he mirado en todo, o si ya he encontrado la soluciÃ³n
     		
     		//System.out.println(frontera.peek().toString());
     		nodo = frontera.poll();//porque el peek, no lo sacamos, y con poll, lo sacamos y eliminamos de la frontera para no tener que volverlo a mirar
-    		if (nodo.getD() < cota) { //comprobamos de que no nos hemos pasado del límite de nodo
+    		if (nodo.getD() < cota) { //comprobamos de que no nos hemos pasado del lÃ­mite de nodo
     			sucesores = nodoSucesores(nodo, g, estrategia, id);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
     				if(!visitados.contains(n)) {
@@ -283,8 +283,8 @@ public class Main {
 	    			nodo = nodo.getPadre();
 	    		}
 	    		System.out.println("\t" + nodo.toString());
-	    		solucion.add(copiarNodo(nodo)); //añadimos el nodo inicial
-	    		return solucion; //agrupación de todos los nodos que hemos ido haciendo
+	    		solucion.add(copiarNodo(nodo)); //aÃ±adimos el nodo inicial
+	    		return solucion; //agrupaciÃ³n de todos los nodos que hemos ido haciendo
 	    	}
     	} return null;
     }
@@ -327,10 +327,10 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
             		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()));
             		break;
             	case "DEPTH":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/(n.getD()+1)));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/n.getD()));
             		break;
             	case "UNIFORM":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getCosto()+1));
+            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getCosto()));
             		break;
             	case "GREEDY":
             		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()));
