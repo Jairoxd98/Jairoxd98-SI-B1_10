@@ -24,6 +24,9 @@ public class Main {
     	Scanner sc = new Scanner(System.in);
 
         boolean salir = false;
+        
+        int inicial[]= new int [2];
+        int objetivo[]= new int [2];
 
         Grid grid = null;
         while (!salir) {
@@ -91,9 +94,11 @@ public class Main {
                         
                         JsonParser parser = new JsonParser();
                         JsonObject gsonObj = parser.parse(jsonCont).getAsJsonObject();
-
+                        
                         String initial = gsonObj.get("INITIAL").getAsString();  //Nodo Inicio
+                        inicial=extraerString(initial);
                         String objective = gsonObj.get("OBJETIVE").getAsString();  //Nodo Objetivo
+                        objetivo=extraerString(objective);
                         String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
                         
                         try {
@@ -107,9 +112,9 @@ public class Main {
                         	grid=null;
                             System.out.println("JSON no compatible\n");
                         }
-                        /*//Hito 2
-                    	System.out.println(initial+" "+objective+" "+maze);
-                        generarFrontera(grid);*/ 
+                        //Ejecucion muestra Hito 2
+                    	//System.out.println(initial+" "+objective+" "+maze);
+                        //generarFrontera(grid);
                         break;
                         
                     case 5:/* Opcion para generar el camino con las diferente heuristicas*/
@@ -121,23 +126,23 @@ public class Main {
                 			switch (option) {
                 			case 1:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000);
                 				break;
                 			case 2:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000);
                 				break;
                 			case 3:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000);
                 				break;
                 			case 4:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000);
                 				break;
                 			case 5:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(0, 0, null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000);
+                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000);
                 				break;
                 			case 6:
                 				seguir = false;
@@ -189,6 +194,25 @@ public class Main {
     	System.out.println("Indica la ruta del archivo .json");
         String path = s.next();
     	return path;
+    }
+    
+    /*
+     * Metodo extraerString
+     * Este es un emtodo auxiliar para cojer el valor (x,y) del JSON
+     */
+    private static int[] extraerString(String v) {
+    	int vec[]= new int[2];
+        
+        v = v.replace("(", " ").trim();
+        v = v.replace(")", " ").trim();
+        v = v.replace(" ", "").trim();
+
+        String[] parts = v.split(","); //Partimos en "x" e "y"
+        
+        /*Tomamos los valores como enteros*/
+        vec[0] = Integer.parseInt(parts[0]);
+        vec[1] = Integer.parseInt(parts[1]);
+    	return vec;
     }
     
     /*
