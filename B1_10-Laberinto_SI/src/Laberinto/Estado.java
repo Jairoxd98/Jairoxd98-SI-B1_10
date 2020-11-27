@@ -82,6 +82,15 @@ public class Estado {
 			return (this.getId()[1] > e.getId()[1])?1:-1;
 	}
 	
+	/*public int compareTo (Estado e) { //Ordenamos por valor, (filas, columnas)
+		if (this.getValor() < e.getValor()) {
+			return -1;
+		} else if (this.getValor() > e.getValor()) {
+			return 1;
+		} else 
+			return (this.getValor() > e.getValor())?1:-1;
+	}*/
+	
 	public boolean equals (Object o) {
 	    Estado x = (Estado) o;
 	    return (this.getId()[0] == x.getId()[0] && this.getId()[1] == x.getId()[1]);

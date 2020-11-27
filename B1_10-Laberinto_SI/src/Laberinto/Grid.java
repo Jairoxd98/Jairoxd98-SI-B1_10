@@ -380,7 +380,7 @@ public class Grid {
 
         BufferedImage imagen = new BufferedImage(this.cols * 30, this.rows * 30, BufferedImage.TYPE_INT_RGB);/*Tamaño de la imagen*/
 
-        Graphics2D g = imagen.createGraphics();
+        Graphics2D g = imagen.createGraphics(); int cont=0;
 
         for (int i = 0; i < this.cellsGrid.length; i++) { /* Recorremos las celads del laberinto */
             for (int j = 0; j < this.cellsGrid[0].length; j++) {

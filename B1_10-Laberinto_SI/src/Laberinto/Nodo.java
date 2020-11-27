@@ -72,7 +72,7 @@ public class Nodo implements Comparable<Nodo> {
 		this.f = f;
 	}
 	
-	@Override 
+	/*@Override 
 	public int compareTo (Nodo n) { //ordenamos de menor a mayor valor (f)
 		if (this.getF() < n.getF()) {
 			return -1;
@@ -81,6 +81,38 @@ public class Nodo implements Comparable<Nodo> {
 		} else {
 			return this.getEstado().compareTo(n.getEstado());
 		}
+	}*/
+	
+	public int compareTo (Nodo n) { //ordenamos de menor a mayor valor (f) y la id del nodo
+		if (this.f < n.getF()) {
+			return -1;
+		}
+		else if (this.f > n.getF()) {
+			return 1;
+		}
+		else if (this.estado.getId()[0] < n.estado.getId()[0]) {
+			return -1;
+		}
+		else if (this.estado.getId()[0] > n.estado.getId()[0]) {
+			return 1;
+		}
+		else if (this.estado.getId()[1] < n.estado.getId()[1]) {
+			return -1;
+		}
+		else if (this.estado.getId()[1] > n.estado.getId()[1]) {
+			return 1;
+		}
+		else if(this.id < n.id) {
+			return -1;
+		}
+		else if(this.id > n.id) {
+			return 1;
+		}
+		else {
+			return this.getEstado().compareTo(n.getEstado());
+		}
+		//return 0;
+		
 	}
 
 	@Override
