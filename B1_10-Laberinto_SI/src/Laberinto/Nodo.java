@@ -117,7 +117,7 @@ public class Nodo implements Comparable<Nodo> {
 
 	@Override
 	public String toString() {
-		return "Nodo ["+ id + "]["+ costo + ", ["+ estado.getId()[0] + ", "+ estado.getId()[1] + "], " + ((padre != null)?padre.getId():"None") + ", "+ ((accion != null)?accion:"None") +", "+ d +", "+ h +", "+ f +"]";
+		return "Nodo ["+ id + "]["+ costo + ", ("+ estado.getId()[0] + ", "+ estado.getId()[1] + "), " + ((padre != null)?padre.getId():"None") + ", "+ ((accion != null)?accion:"None") +", "+ (int)d +", "+ (int)h +", "+ f +"]";
 	}
 	
 	public boolean equals(Object o) {

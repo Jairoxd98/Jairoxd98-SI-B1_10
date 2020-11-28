@@ -1,4 +1,5 @@
 //B1_10-Laberinto_SI/src/Laberinto/problema_5x5.json
+//B1_10-Laberinto_SI/src/Laberinto/problema_10x10.json
 //C:\Users\Carlos\Moreno\Maroto\git\Jairoxd98-SI-B1_10\B1_10-Laberinto_SI\src\Laberinto\problema_10x10.json
 
 package Laberinto;
@@ -36,13 +37,13 @@ public class Main {
         while (!salir) {
 
             try {
-            	System.out.println("Elige una opcion: ");
-                System.out.println("\t"+"1. Generar laberinto");
-                System.out.println("\t"+"2. Exportar imagen");
-                System.out.println("\t"+"3. Importar laberinto");
-                System.out.println("\t"+"4. Importar JSON");
-                System.out.println("\t"+"5. Encontrar una Solucion mediante arbol de Busqueda");
-                System.out.println("\t"+"6. Salir"+"\n");
+            	System.out.println("\nElige una opcion:"
+            			+ "\n\t" + "1. Generar laberinto"
+            			+ "\n\t" + "2. Exportar imagen"
+            			+ "\n\t" + "3. Importar laberinto"
+            			+ "\n\t" + "4. Importar JSON"
+            			+ "\n\t" + "5. Encontrar una Solucion mediante arbol de Busqueda"
+            			+ "\n\t" + "6. Salir"+"\n");
 
                 int option = sc.nextInt();
                 switch (option) {
@@ -133,38 +134,48 @@ public class Main {
                     	
                     	boolean seguir = true;
                     	do {
-                			System.out.println("\nElija la estrategia para implementar el problema\n1. Anchura"
-                					+ "\n2. Profundidad\n3. Costo Uniforme\n4. Busqueda Voraz\n5. Busqueda A*\n6. Salir");
+                			System.out.println("\nElija la estrategia para implementar el problema"
+                					+ "\n\t" + "1. Anchura"
+                					+ "\n\t" + "2. Profundidad"
+                					+ "\n\t" + "3. Costo Uniforme"
+                					+ "\n\t" + "4. Busqueda Voraz"
+                					+ "\n\t" + "5. Busqueda A*"
+                					+ "\n\t" + "6. Salir");
                 			option = sc.nextInt();
+                			String opcionString = new String();
+                			Boolean ok = true;
                 			Stack <Nodo> a = new Stack <Nodo> ();
                 			switch (option) {
                 			case 1:
-                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000,objetivo);
+                				opcionString = "BREADTH";
                 				break;
                 			case 2:
-                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000,objetivo);
+                				opcionString = "DEPTH";
                 				break;
                 			case 3:
-                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000,objetivo);
+                				opcionString = "UNIFORM";
                 				break;
                 			case 4:
-                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000,objetivo);
+                				opcionString = "GREEDY";
                 				break;
                 			case 5:
-                				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000,objetivo);
+                				opcionString = "A";
                 				break;
                 			case 6:
+                				ok = false;
                 				seguir = false;
                 				break;
                 			default:
                 				System.out.println("Opcion erronea ");
+                				ok = false;
                 				break;
                 			}
+                			
+                			if (ok) {
+                				System.out.println("\t[id][cost, state, father_id, action, depth, h, value]");
+                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, opcionString, 1000000,objetivo);
+                			}
+                			
             				while(!a.isEmpty()) {
                 				System.out.println("\t" + a.pop().toString());
                 			}
@@ -260,10 +271,12 @@ public class Main {
     	ArrayList<Nodo> visitados = new ArrayList<Nodo>();
     	Nodo nodo;
     	ArrayList<Nodo> sucesores;
-    	int id = 0;//identificadores ed los nodos
+    	int id = 0;//identificadores de los nodos
     	
     	if (estrategia == "DEPTH") {//porque en caso de la profundidad, la formula es n/n, y como haga 0/0 peta
     		nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), 1);
+    	} else if (estrategia == "GREEDY" || estrategia == "A") {
+    		nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), calcularHeuristica(inicial, g));
     	} else nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), 0);//resto de casos
     	
     	id++;//al ya hacer el id 0, el siguiente será el id 1
@@ -276,6 +289,8 @@ public class Main {
     		if (nodo.getD() < cota) { //comprobamos de que no nos hemos pasado del límite de nodo
     			sucesores = nodoSucesores(nodo, g, estrategia, id);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
+    				
+    				//System.out.println("\t" + n.toString());
     				if(!visitados.contains(n)) {
     					frontera.add(n);
     					//System.out.println("\t" + n.toString());
@@ -345,19 +360,19 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
     		
     		switch (estrategia) { 
             	case "BREADTH":
-            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()+1));
             		break;
             	case "DEPTH":
             		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/(n.getD()+2)));
             		break;
             	case "UNIFORM":
-            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getCosto()));//quito+1
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), (n.getCosto()+a.getValor())+1));
             		break;
             	case "GREEDY":
-            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)));
             		break;
             	case "A":
-            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()+n.getCosto()));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)+(n.getCosto()+a.getValor())+1));
             		break;
     		}
     		id++;
