@@ -33,6 +33,9 @@ public class Grid {
     private TreeMap<Object, Object> cells; //Treemap para ordenar las celdas a la hora de generar el JSON
     //Os dais cuenta de que una matriz ya est� indexada por una columna y una fila ?? por lo que habeis creado una copia del objeto CellsGrid
 
+    public Grid() {
+    	
+    }
     public Grid(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -341,8 +344,8 @@ public class Grid {
             String key = (String) entry.getKey();
             LinkedTreeMap value = (LinkedTreeMap) entry.getValue();
             /*Reemplazamos la sintaxis necesaria para extraer los datos de la llave*/
-            key = key.replace("(", " ").trim();
-            key = key.replace(")", " ").trim();
+            key = key.replace("(", "").trim();
+            key = key.replace(")", "").trim();
             key = key.replace(" ", "").trim();
 
             String[] parts = key.split(","); //Partimos en "x" e "y" 
@@ -361,7 +364,9 @@ public class Grid {
             }
 
             c.setNeighbors(neighbors);
-
+           
+            int v = (int) Double.parseDouble(value.get("value").toString());
+            c.setValue(v);
             this.cellsGrid[x][y] = c;
 
         }

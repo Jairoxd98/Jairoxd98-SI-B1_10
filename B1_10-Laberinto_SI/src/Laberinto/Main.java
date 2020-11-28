@@ -1,3 +1,6 @@
+//B1_10-Laberinto_SI/src/Laberinto/problema_5x5.json
+//C:\Users\Carlos\Moreno\Maroto\git\Jairoxd98-SI-B1_10\B1_10-Laberinto_SI\src\Laberinto\problema_10x10.json
+
 package Laberinto;
 
 import com.google.gson.Gson;
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main {
 
@@ -92,8 +96,8 @@ public class Main {
                     	
                     	String jsonCont = getJSON(askJSON()); //Obtenemos el contenido del JSON
                         
-                        JsonParser parser = new JsonParser();
-                        JsonObject gsonObj = parser.parse(jsonCont).getAsJsonObject();
+                        @SuppressWarnings("deprecation") JsonParser parser = new JsonParser();
+                        @SuppressWarnings("deprecation") JsonObject gsonObj = parser.parse(jsonCont).getAsJsonObject();
                         
                         String initial = gsonObj.get("INITIAL").getAsString();  //Nodo Inicio
                         inicial=extraerString(initial);
@@ -102,7 +106,7 @@ public class Main {
                         String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
                         
                         try {
-                            String jsonContent = getJSON("src//Laberinto//"+maze);/* PONER DONDE SE ENCUENTRA */ 
+                            String jsonContent = getJSON("B1_10-Laberinto_SI/src/Laberinto/"+maze);/* PONER DONDE SE ENCUENTRA */ 
                             Gson gson = new Gson();
 
                             grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
@@ -110,39 +114,49 @@ public class Main {
                             System.out.println("JSON importado correctamente\n");
                         } catch (Exception ex) {
                         	grid=null;
-                            System.out.println("JSON no compatible\n");
+                            System.out.println("JSON no compatible\n"+ex);
                         }
                         //Ejecucion muestra Hito 2
                     	//System.out.println(initial+" "+objective+" "+maze);
                         //generarFrontera(grid);
                         break;
                         
-                    case 5:/* Opcion para encontrrar una solucion con las diferente heuristicas*/
+                    case 5:/* Opcion para encontrar una solucion con las diferente heuristicas*/
+                    	
+                    	for(int i=0; i < grid.getCellsGrid().length; i++) {
+                    		
+                    		for(int j=0; j < grid.getCellsGrid()[0].length; j++) {
+                    			System.out.print(grid.getCellsGrid()[i][j].getValue()+" ");
+                    		}
+                    		System.out.println();
+                    	}
+                    	
                     	boolean seguir = true;
                     	do {
                 			System.out.println("\nElija la estrategia para implementar el problema\n1. Anchura"
                 					+ "\n2. Profundidad\n3. Costo Uniforme\n4. Busqueda Voraz\n5. Busqueda A*\n6. Salir");
                 			option = sc.nextInt();
+                			Stack <Nodo> a = new Stack <Nodo> ();
                 			switch (option) {
                 			case 1:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000,objetivo);
+                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "BREADTH", 1000000,objetivo);
                 				break;
                 			case 2:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000,objetivo);
+                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "DEPTH", 1000000,objetivo);
                 				break;
                 			case 3:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000,objetivo);
+                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "UNIFORM", 1000000,objetivo);
                 				break;
                 			case 4:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000,objetivo);
+                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "GREEDY", 1000000,objetivo);
                 				break;
                 			case 5:
                 				System.out.println("\t[id][cost,state,father_id,action,depth,h,value]");
-                				busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000,objetivo);
+                				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, "A", 1000000,objetivo);
                 				break;
                 			case 6:
                 				seguir = false;
@@ -151,6 +165,10 @@ public class Main {
                 				System.out.println("Opcion erronea ");
                 				break;
                 			}
+            				while(!a.isEmpty()) {
+                				System.out.println("\t" + a.pop().toString());
+                			}
+                			
                 		} while (seguir);
                     	break;
                         
@@ -236,7 +254,7 @@ public class Main {
      * Metodo Busqueda 
      * Se utiliza para realizar un arbol de busqueda con diferentes estrategias 
      */
-    public static ArrayList<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota, int []objetivo){
+    public static Stack<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota, int []objetivo){
     	
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	ArrayList<Nodo> visitados = new ArrayList<Nodo>();
@@ -244,9 +262,9 @@ public class Main {
     	ArrayList<Nodo> sucesores;
     	int id = 0;//identificadores ed los nodos
     	
-    	if (estrategia == "profundidad") {//porque en caso de la profundidad, la formula es n/n, y como haga 0/0 peta
-    		nodo = new Nodo(null, inicial, id, 0, null, 0, 0, 1);
-    	} else nodo = new Nodo(null, inicial, id, 0, null, 0, 0, 0);//resto de casos
+    	if (estrategia == "DEPTH") {//porque en caso de la profundidad, la formula es n/n, y como haga 0/0 peta
+    		nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), 1);
+    	} else nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), 0);//resto de casos
     	
     	id++;//al ya hacer el id 0, el siguiente será el id 1
     	frontera.add(nodo); //añadimos el nodo inicial
@@ -276,13 +294,13 @@ public class Main {
     	if (!frontera.isEmpty()){ //comprobamos si hay solucion o no
     		if (esObjetivo(frontera.peek(), objetivo)) { //si es solucion entonces procedemos a coger la informacion y mostrarla 
 	    		nodo = frontera.peek();
-	    		ArrayList<Nodo> solucion = new ArrayList<Nodo>();
+	    		Stack<Nodo> solucion = new Stack<Nodo>();
 	    		while(nodo.getPadre()!=null) { //vas cogiendo el nodo actual y lo metes como parte de la solucion
-	    			System.out.println("\t" + nodo.toString());
-	    			solucion.add(copiarNodo(nodo));
+	    			//System.out.println("\t" + nodo.toString());
+	    			solucion.push(copiarNodo(nodo));
 	    			nodo = nodo.getPadre();
 	    		}
-	    		System.out.println("\t" + nodo.toString());
+	    		//System.out.println("\t" + nodo.toString());
 	    		solucion.add(copiarNodo(nodo)); //añadimos el nodo inicial
 	    		return solucion; //agrupación de todos los nodos que hemos ido haciendo
 	    	}
@@ -304,7 +322,7 @@ public class Main {
     		list.add(new Estado(e.getId()[0], e.getId()[1]+1, g.getId_mov()[1], g.getCellsGrid()[e.getId()[0]][e.getId()[1]+1].getValue()));
     	}
     	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S (comprobar el estado de ir hacia el Sur)
-    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue()));
+    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); //ellos lo hacen asi
         }
     	if (e.getId()[1] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O (comprobar el estado de ir hacia el Oeste)
     		list.add(new Estado(e.getId()[0], e.getId()[1]-1, g.getId_mov()[3], g.getCellsGrid()[e.getId()[0]][e.getId()[1]-1].getValue()));
@@ -316,27 +334,30 @@ public class Main {
  * Metodo nodoSucesores 
  * A apartir de cada estado comprueba los posibles sucesores y los genera dependiendo de la heuristica seleccionado     
  */
+    //public Nodo(Nodo padre, Estado estado, int id, int costo, String accion, double d, double h, double f)
 private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){
     	
     	ArrayList<Nodo> list = new ArrayList<Nodo>();
     	
     	for (Estado a: funcionSucesores(n.getEstado(), g)) {
     		
+    		//System.out.println(id+"\t"+n.getCosto()+" "+a.getValor());
+    		
     		switch (estrategia) { 
             	case "BREADTH":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getD()));
             		break;
             	case "DEPTH":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/(n.getD()+1)));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/(n.getD()+2)));
             		break;
             	case "UNIFORM":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getCosto()));//quito+1
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getCosto()));//quito+1
             		break;
             	case "GREEDY":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()));
             		break;
             	case "A":
-            		list.add(new Nodo(n, a, id, n.getCosto()+a.getValor(), a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()+n.getCosto()));
+            		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), n.getH()+n.getCosto()));
             		break;
     		}
     		id++;
@@ -365,7 +386,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
 	 * Heurística((fila,columna))= |fila-fila_objetivo| + |columna-columna_objetivo|
 	 */
 	public static int calcularHeuristica (Estado e, Grid g) {
-		return (Math.abs(g.getRows()-e.getId()[0]))+(Math.abs(g.getCols()-e.getId()[1]));
+		return (Math.abs(g.getRows()-e.getId()[0]-1))+(Math.abs(g.getCols()-e.getId()[1]-1));
 	}
 	/*
 	 * Metodo copiarNodo
