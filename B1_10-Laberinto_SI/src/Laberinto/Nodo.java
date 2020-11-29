@@ -72,17 +72,6 @@ public class Nodo implements Comparable<Nodo> {
 		this.f = f;
 	}
 	
-	/*@Override 
-	public int compareTo (Nodo n) { //ordenamos de menor a mayor valor (f)
-		if (this.getF() < n.getF()) {
-			return -1;
-		} else if (this.getF() > n.getF()) {
-			return 1;
-		} else {
-			return this.getEstado().compareTo(n.getEstado());
-		}
-	}*/
-	
 	public int compareTo (Nodo n) { //ordenamos de menor a mayor valor (f) y la id del nodo
 		if (this.f < n.getF()) {
 			return -1;
@@ -109,12 +98,45 @@ public class Nodo implements Comparable<Nodo> {
 			return 1;
 		}
 		else {
-			return this.getEstado().compareTo(n.getEstado());
+			//return this.getEstado().compareTo(n.getEstado());
+			return 0;
 		}
-		//return 0;
-		
 	}
+	/*public int compareTo(Nodo o) {
+		int r = 0;
 
+		if (o.getF() < this.f)
+			r = +1;
+		else if (o.getF() > this.f)
+			r = -1;
+		else {
+			r = 0;
+
+			if (o.getEstado().getId()[0] < this.estado.getId()[0])
+				r = +1;
+			else if (o.getEstado().getId()[0] > this.estado.getId()[0])
+				r = -1;
+			else {
+				r = 0;
+
+				if (o.getEstado().getId()[1] < this.estado.getId()[1])
+					r = +1;
+				else if (o.getEstado().getId()[1] > this.estado.getId()[1])
+					r = -1;
+				else {
+					r = 0;
+
+					if (o.getId() < this.id) {
+						r = +1;
+					} else if (o.getId() > this.id) {
+						r = -1;
+					}
+				}
+			}
+		}
+		return r;
+	}*/
+	
 	@Override
 	public String toString() {
 		return "Nodo ["+ id + "]["+ costo + ", ("+ estado.getId()[0] + ", "+ estado.getId()[1] + "), " + ((padre != null)?padre.getId():"None") + ", "+ ((accion != null)?accion:"None") +", "+ (int)d +", "+ (int)h +", "+ f +"]";

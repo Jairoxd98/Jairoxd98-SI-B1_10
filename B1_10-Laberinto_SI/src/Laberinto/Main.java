@@ -1,7 +1,3 @@
-//B1_10-Laberinto_SI/src/Laberinto/problema_5x5.json
-//B1_10-Laberinto_SI/src/Laberinto/problema_10x10.json
-//C:\Users\Carlos\Moreno\Maroto\git\Jairoxd98-SI-B1_10\B1_10-Laberinto_SI\src\Laberinto\problema_10x10.json
-
 package Laberinto;
 
 import com.google.gson.Gson;
@@ -107,7 +103,7 @@ public class Main {
                         String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
                         
                         try {
-                            String jsonContent = getJSON("B1_10-Laberinto_SI/src/Laberinto/"+maze);/* PONER DONDE SE ENCUENTRA */ 
+                            String jsonContent = getJSON("src/Laberinto/"+maze);/* PONER DONDE SE ENCUENTRA */ 
                             Gson gson = new Gson();
 
                             grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
@@ -290,13 +286,13 @@ public class Main {
     			sucesores = nodoSucesores(nodo, g, estrategia, id);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
     				
-    				//System.out.println("\t" + n.toString());
+    				System.out.println("\t" + n.toString()+" 1");
     				if(!visitados.contains(n)) {
     					frontera.add(n);
-    					//System.out.println("\t" + n.toString());
+    					System.out.println("\t" + n.toString()+" 2");
     				}
     				id++; //aumentamos el identificador por cada nodo identificado
-        			//System.out.println("\t" + n.toString());
+        			System.out.println("\t" + n.toString()+" 3");
         		}
     		}
     		visitados.add(copiarNodo(nodo)); //metemos el nodo actual
@@ -337,7 +333,7 @@ public class Main {
     		list.add(new Estado(e.getId()[0], e.getId()[1]+1, g.getId_mov()[1], g.getCellsGrid()[e.getId()[0]][e.getId()[1]+1].getValue()));
     	}
     	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S (comprobar el estado de ir hacia el Sur)
-    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); //ellos lo hacen asi
+    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); 
         }
     	if (e.getId()[1] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O (comprobar el estado de ir hacia el Oeste)
     		list.add(new Estado(e.getId()[0], e.getId()[1]-1, g.getId_mov()[3], g.getCellsGrid()[e.getId()[0]][e.getId()[1]-1].getValue()));
@@ -356,7 +352,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
     	
     	for (Estado a: funcionSucesores(n.getEstado(), g)) {
     		
-    		//System.out.println(id+"\t"+n.getCosto()+" "+a.getValor());
+    		System.out.println(id+"\t"+n.getCosto()+" "+a.getValor());
     		
     		switch (estrategia) { 
             	case "BREADTH":
