@@ -1,7 +1,3 @@
-//B1_10-Laberinto_SI/src/Laberinto/problema_5x5.json
-//B1_10-Laberinto_SI/src/Laberinto/problema_10x10.json
-//C:\Users\Carlos\Moreno\Maroto\git\Jairoxd98-SI-B1_10\B1_10-Laberinto_SI\src\Laberinto\problema_10x10.json
-
 package Laberinto;
 
 import com.google.gson.Gson;
@@ -12,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.PriorityQueue;
 import java.util.Scanner;
@@ -108,7 +103,7 @@ public class Main {
                         String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
                         
                         try {
-                            String jsonContent = getJSON("src//Laberinto//"+maze);/* PONER DONDE SE ENCUENTRA */ 
+                            String jsonContent = getJSON("src/Laberinto/"+maze);/* PONER DONDE SE ENCUENTRA */ 
                             Gson gson = new Gson();
 
                             grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
@@ -124,14 +119,6 @@ public class Main {
                         break;
                         
                     case 5:/* Opcion para encontrar una solucion con las diferente heuristicas*/
-                    	
-                    	for(int i=0; i < grid.getCellsGrid().length; i++) {
-                    		
-                    		for(int j=0; j < grid.getCellsGrid()[0].length; j++) {
-                    			System.out.print(grid.getCellsGrid()[i][j].getValue()+" ");
-                    		}
-                    		System.out.println();
-                    	}
                     	
                     	boolean seguir = true;
                     	do {
@@ -249,7 +236,7 @@ public class Main {
      * Metodo generarFrontera 
      * Este metodo se utiliza para crearla frontera, y añadir nuevos nodos a la lista PriorityQueue de la frontera
      */
-    public static void generarFrontera (Grid g) { 
+    public static void generarFrontera (Grid g) { //
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	
     	for (int i = 0; i<20; i++) {
@@ -268,8 +255,7 @@ public class Main {
      */
     public static Stack<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota, int []objetivo){
     	
-    	Comparator<Nodo> comparator = new OrdenarFrontera();
-    	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>(1000,comparator);
+    	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	ArrayList<Nodo> visitados = new ArrayList<Nodo>();
     	Nodo nodo;
     	ArrayList<Nodo> sucesores;
@@ -286,38 +272,26 @@ public class Main {
     	
     	while (!frontera.isEmpty() && !esObjetivo(frontera.peek(), objetivo)) { //no voy a tratar de buscar si ya he mirado en todo, o si ya he encontrado la solución
     		
-    		//System.out.println(frontera.peek().toString());
     		nodo = frontera.poll();//porque el peek, no lo sacamos, y con poll, lo sacamos y eliminamos de la frontera para no tener que volverlo a mirar
     		if (nodo.getD() < cota) { //comprobamos de que no nos hemos pasado del límite de nodo
     			sucesores = nodoSucesores(nodo, g, estrategia, id);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
-    				
-    				//System.out.println("\t" + n.toString());
     				if(!visitados.contains(n)) {
     					frontera.add(n);
-    					//System.out.println("\t" + n.toString());
     				}
     				id++; //aumentamos el identificador por cada nodo identificado
-        			//System.out.println("\t" + n.toString());
         		}
     		}
     		visitados.add(copiarNodo(nodo)); //metemos el nodo actual
-    		/*System.out.println("Visitados");
-    		for (Nodo n: visitados) { //forma de ver todos los visitadosfvcv
-    			System.out.println("\t" + n.toString());
-    		}
-    		System.out.println("Fin de Visitados");*/
     	}
     	if (!frontera.isEmpty()){ //comprobamos si hay solucion o no
     		if (esObjetivo(frontera.peek(), objetivo)) { //si es solucion entonces procedemos a coger la informacion y mostrarla 
 	    		nodo = frontera.peek();
 	    		Stack<Nodo> solucion = new Stack<Nodo>();
 	    		while(nodo.getPadre()!=null) { //vas cogiendo el nodo actual y lo metes como parte de la solucion
-	    			//System.out.println("\t" + nodo.toString());
 	    			solucion.push(copiarNodo(nodo));
 	    			nodo = nodo.getPadre();
 	    		}
-	    		//System.out.println("\t" + nodo.toString());
 	    		solucion.add(copiarNodo(nodo)); //añadimos el nodo inicial
 	    		return solucion; //agrupación de todos los nodos que hemos ido haciendo
 	    	}
@@ -339,7 +313,7 @@ public class Main {
     		list.add(new Estado(e.getId()[0], e.getId()[1]+1, g.getId_mov()[1], g.getCellsGrid()[e.getId()[0]][e.getId()[1]+1].getValue()));
     	}
     	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S (comprobar el estado de ir hacia el Sur)
-    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); //ellos lo hacen asi
+    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); 
         }
     	if (e.getId()[1] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O (comprobar el estado de ir hacia el Oeste)
     		list.add(new Estado(e.getId()[0], e.getId()[1]-1, g.getId_mov()[3], g.getCellsGrid()[e.getId()[0]][e.getId()[1]-1].getValue()));
@@ -351,14 +325,11 @@ public class Main {
  * Metodo nodoSucesores 
  * A apartir de cada estado comprueba los posibles sucesores y los genera dependiendo de la heuristica seleccionado     
  */
-    //public Nodo(Nodo padre, Estado estado, int id, int costo, String accion, double d, double h, double f)
 private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia, int id){
     	
     	ArrayList<Nodo> list = new ArrayList<Nodo>();
     	
     	for (Estado a: funcionSucesores(n.getEstado(), g)) {
-    		
-    		//System.out.println(id+"\t"+n.getCosto()+" "+a.getValor());
     		
     		switch (estrategia) { 
             	case "BREADTH":
@@ -386,11 +357,6 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
      * Metodo esObjetivo
      * Metodo que se utiliza para comprobar que hemos llegado al nodo final correcto
      */
-	/*public static boolean esObjetivo (Nodo n, Grid g) { 
-		if (n.getEstado().getId()[0] == g.getRows()-1 && n.getEstado().getId()[1] == g.getCols()-1) {
-			return true;
-		} else return false;
-	}*/
 	public static boolean esObjetivo (Nodo n, int []objetivo) { 
 		if (n.getEstado().getId()[0] == objetivo[0] && n.getEstado().getId()[1] == objetivo[1]) {
 			return true;

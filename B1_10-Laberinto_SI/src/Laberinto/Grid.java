@@ -386,27 +386,37 @@ public class Grid {
         BufferedImage imagen = new BufferedImage(this.cols * 30, this.rows * 30, BufferedImage.TYPE_INT_RGB);/*Tamaño de la imagen*/
 
         Graphics2D g = imagen.createGraphics(); int cont=0;
-
+        
         for (int i = 0; i < this.cellsGrid.length; i++) { /* Recorremos las celads del laberinto */
             for (int j = 0; j < this.cellsGrid[0].length; j++) {
                 boolean[] n = this.cellsGrid[i][j].getNeighbors(); /*Cogemos los vecinos de la celda*/
                 
+                g.setColor(Color.black);
+                g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
+                
                 switch(this.cellsGrid[i][j].getValue()) { /* Segun el valor de la celda pintamos la celda de un color */
 	                case 0: //Asfalto
 	                	g.setColor(Color.gray);
+	                	g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
+	                	g.setColor(Color.black);
 	                	break;
 	                case 1: //Tierra
 	                	g.setColor(new Color(153, 102, 0));
+	                	g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
+	                	g.setColor(Color.black);
 	                	break;
 	                case 2: //Hierba
 	                	g.setColor(new Color(0, 153, 0));
+	                	g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
+	                	g.setColor(Color.black);
 	                	break;
 	                case 3: //Agua
 	                	g.setColor(Color.blue);
+	                	g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
+	                	g.setColor(Color.black);
 	                	break;
 	            }
 	            
-	            g.fillRect((20 * j) + 10, 20 * (i + 1), (20 * j) + 30, 20 * (i + 1));
 	            g.setColor(Color.white);
                 
                 /*Si tiene un muro en el Norte seleccionamos el punto de la esquina superior izquierda de la celda y el de la esquina superior derecha y pintamos una linea entre ellos */
