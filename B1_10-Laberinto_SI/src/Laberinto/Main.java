@@ -1,3 +1,7 @@
+//B1_10-Laberinto_SI/src/Laberinto/problema_5x5.json
+//B1_10-Laberinto_SI/src/Laberinto/problema_10x10.json
+//C:\Users\Carlos\Moreno\Maroto\git\Jairoxd98-SI-B1_10\B1_10-Laberinto_SI\src\Laberinto\problema_10x10.json
+
 package Laberinto;
 
 import com.google.gson.Gson;
@@ -8,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.PriorityQueue;
 import java.util.Scanner;
@@ -103,7 +108,7 @@ public class Main {
                         String maze = gsonObj.get("MAZE").getAsString(); //Nombre del .json a utilizar
                         
                         try {
-                            String jsonContent = getJSON("src/Laberinto/"+maze);/* PONER DONDE SE ENCUENTRA */ 
+                            String jsonContent = getJSON("src//Laberinto//"+maze);/* PONER DONDE SE ENCUENTRA */ 
                             Gson gson = new Gson();
 
                             grid = gson.fromJson(jsonContent, Grid.class); //Extrae el contenido del JSON que pedimos por teclado
@@ -120,13 +125,13 @@ public class Main {
                         
                     case 5:/* Opcion para encontrar una solucion con las diferente heuristicas*/
                     	
-                    	/*for(int i=0; i < grid.getCellsGrid().length; i++) {
+                    	for(int i=0; i < grid.getCellsGrid().length; i++) {
                     		
                     		for(int j=0; j < grid.getCellsGrid()[0].length; j++) {
                     			System.out.print(grid.getCellsGrid()[i][j].getValue()+" ");
                     		}
                     		System.out.println();
-                    	}*/
+                    	}
                     	
                     	boolean seguir = true;
                     	do {
@@ -244,7 +249,7 @@ public class Main {
      * Metodo generarFrontera 
      * Este metodo se utiliza para crearla frontera, y añadir nuevos nodos a la lista PriorityQueue de la frontera
      */
-    public static void generarFrontera (Grid g) { //
+    public static void generarFrontera (Grid g) { 
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
     	
     	for (int i = 0; i<20; i++) {
@@ -263,7 +268,8 @@ public class Main {
      */
     public static Stack<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota, int []objetivo){
     	
-    	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
+    	Comparator<Nodo> comparator = new OrdenarFrontera();
+    	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>(1000,comparator);
     	ArrayList<Nodo> visitados = new ArrayList<Nodo>();
     	Nodo nodo;
     	ArrayList<Nodo> sucesores;
@@ -286,13 +292,13 @@ public class Main {
     			sucesores = nodoSucesores(nodo, g, estrategia, id);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
     				
-    				//System.out.println("\t" + n.toString()+" 1");
+    				//System.out.println("\t" + n.toString());
     				if(!visitados.contains(n)) {
     					frontera.add(n);
-    					//System.out.println("\t" + n.toString()+" 2");
+    					//System.out.println("\t" + n.toString());
     				}
     				id++; //aumentamos el identificador por cada nodo identificado
-        			//System.out.println("\t" + n.toString()+" 3");
+        			//System.out.println("\t" + n.toString());
         		}
     		}
     		visitados.add(copiarNodo(nodo)); //metemos el nodo actual
@@ -333,7 +339,7 @@ public class Main {
     		list.add(new Estado(e.getId()[0], e.getId()[1]+1, g.getId_mov()[1], g.getCellsGrid()[e.getId()[0]][e.getId()[1]+1].getValue()));
     	}
     	if (e.getId()[0] != g.getRows()-1 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[2]) { //S (comprobar el estado de ir hacia el Sur)
-    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); 
+    		list.add(new Estado(e.getId()[0]+1, e.getId()[1], g.getId_mov()[2], g.getCellsGrid()[e.getId()[0]+1][e.getId()[1]].getValue())); //ellos lo hacen asi
         }
     	if (e.getId()[1] != 0 && g.getCellsGrid()[e.getId()[0]][e.getId()[1]].getNeighbors()[3]) { //O (comprobar el estado de ir hacia el Oeste)
     		list.add(new Estado(e.getId()[0], e.getId()[1]-1, g.getId_mov()[3], g.getCellsGrid()[e.getId()[0]][e.getId()[1]-1].getValue()));

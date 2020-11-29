@@ -73,6 +73,25 @@ public class Estado {
 		return "Estado [id=" + Arrays.toString(id) + ", valor=" + valor + ", md5=" + md5 + ", accion=" + accion + "]";
 	}
 	
+	/*public int compareTo (Estado e) { //Ordenamos por (filas, columnas)
+		if (this.getId()[0] < e.getId()[0]) {
+			return -1;
+		} else if (this.getId()[0] > e.getId()[0]) {
+			return 1;
+		} else 
+			//return (this.getId()[1] > e.getId()[1])?1:-1;
+			return 0;
+	}*/
+	
+	/*public int compareTo (Estado e) { //Ordenamos por valor, (filas, columnas)
+		if (this.getValor() < e.getValor()) {
+			return -1;
+		} else if (this.getValor() > e.getValor()) {
+			return 1;
+		} else 
+			return (this.getValor() > e.getValor())?1:-1;
+	}*/
+	
 	public boolean equals (Object o) {
 	    Estado x = (Estado) o;
 	    return (this.getId()[0] == x.getId()[0] && this.getId()[1] == x.getId()[1]);
