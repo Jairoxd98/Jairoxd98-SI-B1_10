@@ -120,13 +120,13 @@ public class Main {
                         
                     case 5:/* Opcion para encontrar una solucion con las diferente heuristicas*/
                     	
-                    	for(int i=0; i < grid.getCellsGrid().length; i++) {
+                    	/*for(int i=0; i < grid.getCellsGrid().length; i++) {
                     		
                     		for(int j=0; j < grid.getCellsGrid()[0].length; j++) {
                     			System.out.print(grid.getCellsGrid()[i][j].getValue()+" ");
                     		}
                     		System.out.println();
-                    	}
+                    	}*/
                     	
                     	boolean seguir = true;
                     	do {
@@ -286,13 +286,13 @@ public class Main {
     			sucesores = nodoSucesores(nodo, g, estrategia, id);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
     				
-    				System.out.println("\t" + n.toString()+" 1");
+    				//System.out.println("\t" + n.toString()+" 1");
     				if(!visitados.contains(n)) {
     					frontera.add(n);
-    					System.out.println("\t" + n.toString()+" 2");
+    					//System.out.println("\t" + n.toString()+" 2");
     				}
     				id++; //aumentamos el identificador por cada nodo identificado
-        			System.out.println("\t" + n.toString()+" 3");
+        			//System.out.println("\t" + n.toString()+" 3");
         		}
     		}
     		visitados.add(copiarNodo(nodo)); //metemos el nodo actual
@@ -352,7 +352,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
     	
     	for (Estado a: funcionSucesores(n.getEstado(), g)) {
     		
-    		System.out.println(id+"\t"+n.getCosto()+" "+a.getValor());
+    		//System.out.println(id+"\t"+n.getCosto()+" "+a.getValor());
     		
     		switch (estrategia) { 
             	case "BREADTH":
