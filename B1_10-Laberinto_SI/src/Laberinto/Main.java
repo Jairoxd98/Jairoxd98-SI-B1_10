@@ -387,7 +387,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
                 	case "GREEDY":
                 		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)));
                 		break;
-                	case "A"://(n.getEstado().getId()[1]%2)+1)*(a.getValor()+1) //Examen Jairo(Creo que esta mal)
+                	case "A": 
                 		list.add(new Nodo(n, a, id,/*aqui*/ (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)+(n.getCosto()+a.getValor())+1));
                 		break;
         		}
