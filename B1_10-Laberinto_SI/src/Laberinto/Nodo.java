@@ -72,7 +72,7 @@ public class Nodo implements Comparable<Nodo> {
 		this.f = f;
 	}
 	
-	public int compareTo (Nodo n) { //ordenamos de menor a mayor valor (f) y la id del nodo
+	public int compareTo (Nodo n) { //ordenamos de menor a mayor valor (f),fila,columna y la id del nodo
 		if (this.f < n.getF()) {
 			return -1;
 		}

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -123,14 +124,6 @@ public class Main {
                         
                     case 5:/* Opcion para encontrar una solucion con las diferente heuristicas*/
                     	
-                    	for(int i=0; i < grid.getCellsGrid().length; i++) {
-                    		
-                    		for(int j=0; j < grid.getCellsGrid()[0].length; j++) {
-                    			System.out.print(grid.getCellsGrid()[i][j].getValue()+" ");
-                    		}
-                    		System.out.println();
-                    	}
-                    	
                     	boolean seguir = true;
                     	do {
                 			System.out.println("\nElija la estrategia para implementar el problema"
@@ -170,14 +163,38 @@ public class Main {
                 				break;
                 			}
                 			
-                			if (ok) {
-                				System.out.println("\t[id][cost, state, father_id, action, depth, h, value]");
+                			if (ok) {																		
+                				System.out.println("[id][cost, state, father_id, action, depth, h, value]");
                 				a = busqueda(new Estado(inicial[0], inicial[1], null, grid.getCellsGrid()[0][0].getValue()), grid, opcionString, 1000000,objetivo);
                 			}
-                			System.out.println("\t -----------------------------------------------------------------------------------------\n");
-            				while(!a.isEmpty()) {
-                				System.out.println("\t" + a.pop().toString());
-                			}
+                			
+                			FileWriter fichero = null;
+                	        PrintWriter pw = null;
+                	        try
+                	        {
+                	            fichero = new FileWriter("src/Laberinto/PREGUNTA1.txt");//Poner el nombre del txt de la Solucion
+                	            pw = new PrintWriter(fichero);
+                	            
+                	            pw.println("[id][cost, state, father_id, action, depth, h, value]");
+                	            String p="";
+                	            
+                	          //int n=2;//Para poner las fila que es
+                				while(!a.isEmpty()) {
+                    				System.out.println(p=a.pop().toString());//+" "+ n++);
+                    				pw.println(p);
+                    			}
+                	                
+
+                	        } catch (Exception e) {
+                	            e.printStackTrace();
+                	        } finally {
+                	           try {
+                	           if (null != fichero)
+                	              fichero.close();
+                	           } catch (Exception e2) {
+                	              e2.printStackTrace();
+                	           }
+                	        }
                 			
                 		} while (seguir);
                     	break;
@@ -265,12 +282,9 @@ public class Main {
      * Se utiliza para realizar un arbol de busqueda con diferentes estrategias 
      */
     public static Stack<Nodo> busqueda (Estado inicial, Grid g, String estrategia, int cota, int []objetivo){
-    	
     	PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>();
-    	PriorityQueue<Nodo> fronteraAux = new PriorityQueue<Nodo>();
     	ArrayList<Nodo> visitados = new ArrayList<Nodo>();
     	Nodo nodo;
-    	
     	ArrayList<Nodo> sucesores;
     	int id = 0;//identificadores de los nodos
     	
@@ -279,24 +293,41 @@ public class Main {
     	} else if (estrategia == "GREEDY" || estrategia == "A") {
     		nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), calcularHeuristica(inicial, g));
     	} else nodo = new Nodo(null, inicial, id, 0, null, 0, calcularHeuristica(inicial, g), 0);//resto de casos
-    	
+    	//id++;
     	frontera.add(nodo); //añadimos el nodo inicial
-
+    	if (estrategia == "GREEDY") {
     	while (!frontera.isEmpty() && !esObjetivo(frontera.peek(), objetivo)) { //no voy a tratar de buscar si ya he mirado en todo, o si ya he encontrado la solución
     		nodo = frontera.poll();//porque el peek, no lo sacamos, y con poll, lo sacamos y eliminamos de la frontera para no tener que volverlo a mirar
     		if (nodo.getD() < cota) { //comprobamos de que no nos hemos pasado del límite de nodo
     			sucesores = nodoSucesores(nodo, g, estrategia, id, visitados);//miramos los caminos adyacentes
     			for (Nodo n: sucesores) { //para cada nodo adyacentes, miramos si lo hemos visitado o no, si no lo he visitado lo meto a la frontera
-    				
-    				if(!visitados.contains(n) && !frontera.contains(n)) {
-    					frontera.add(n);
-    				}
+    				if(!visitados.contains(n)) {
+        				frontera.add(n);
+        			}
     				id++;//aumentamos el identificador por cada nodo identificado
         		}
     			visitados.add(copiarNodo(nodo));
     		}
     	}
-    	
+    	}else {
+    	boolean esSolucion = false;
+    	while (!frontera.isEmpty() && !esSolucion) {
+    		
+			nodo = frontera.poll();
+			//System.out.println("\t" + n.toString()+" 1");
+			if (!frontera.isEmpty() && esObjetivo(frontera.peek(), objetivo)) {
+				esSolucion = true;
+
+			} else if (!visitados.contains(nodo) && nodo.getD() < cota) {
+				visitados.add(copiarNodo(nodo));
+				sucesores = nodoSucesores(nodo, g, estrategia, id, visitados);
+				for (int i = 0; i < sucesores.size(); i++) {
+					id++;
+					frontera.add(sucesores.get(i));
+				}
+			}
+		}
+    	}
     	if (!frontera.isEmpty()){ //comprobamos si hay solucion o no
     		if (esObjetivo(frontera.peek(), objetivo)) { //si es solucion entonces procedemos a coger la informacion y mostrarla 
 	    		nodo = frontera.peek();
@@ -307,7 +338,7 @@ public class Main {
 	    		}
 	    		solucion.add(copiarNodo(nodo)); //añadimos el nodo inicial
 	    		return solucion; //agrupación de todos los nodos que hemos ido haciendo
-	    	}
+	    	}System.out.println("Hola");
     	} return null;
     }
     
@@ -356,11 +387,10 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
                 	case "GREEDY":
                 		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)));
                 		break;
-                	case "A":
-                		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)+(n.getCosto()+a.getValor())+1));
+                	case "A"://(n.getEstado().getId()[1]%2)+1)*(a.getValor()+1) //Examen Jairo(Creo que esta mal)
+                		list.add(new Nodo(n, a, id,/*aqui*/ (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)+(n.getCosto()+a.getValor())+1));
                 		break;
         		}
-    	//	}
     	}
     	return list;
     }
