@@ -78,7 +78,7 @@ public class Main {
                         }
                         break;
                         
-                    case 3: /*Opcion para importar el laberinto mediante el JSON especificado por el usuario*/
+                    case 3: /*Opcion para importar el laberinto mediante JSON especificado por el usuario*/
 
                     	try {
                             String jsonContent = getJSON(askJSON()); 

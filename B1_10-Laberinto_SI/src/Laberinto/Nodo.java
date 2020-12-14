@@ -7,9 +7,9 @@ public class Nodo implements Comparable<Nodo> {
 	private int id;
 	private int costo;
 	private String accion;
-	private double d;
+	private double d;//profundidad
 	private double h;
-	private double f;
+	private double f;//valor nodo
 	
 	public Nodo(Nodo padre, Estado estado, int id, int costo, String accion, double d, double h, double f) {
 
