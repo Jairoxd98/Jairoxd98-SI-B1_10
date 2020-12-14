@@ -127,10 +127,10 @@ public class Main {
                     	boolean seguir = true;
                     	do {
                 			System.out.println("\nElija la estrategia para implementar el problema"
-                					+ "\n\t" + "1. Anchura"
-                					+ "\n\t" + "2. Profundidad"
-                					+ "\n\t" + "3. Costo Uniforme"
-                					+ "\n\t" + "4. Busqueda Voraz"
+                					+ "\n\t" + "1. Anchura - BREADTH"
+                					+ "\n\t" + "2. Profundidad - DEPTH"
+                					+ "\n\t" + "3. Costo Uniforme - UNIFORM"
+                					+ "\n\t" + "4. Busqueda Voraz - GREEDY"
                 					+ "\n\t" + "5. Busqueda A*"
                 					+ "\n\t" + "6. Salir");
                 			option = sc.nextInt();
@@ -178,12 +178,11 @@ public class Main {
                 	            pw.println("[id][cost, state, father_id, action, depth, h, value]");
                 	            String p="";
                 	            
-                	          //int n=2;//Para poner las fila que es
+                	          int n=2;//Para poner las fila que es
                 				while(!a.isEmpty()) {
-                    				System.out.println(p=a.pop().toString());//+" "+ n++);
+                    				System.out.println(p=a.pop().toString()+" "+ n++);
                     				pw.println(p);
                     			}
-                	                
 
                 	        } catch (Exception e) {
                 	            e.printStackTrace();
@@ -338,7 +337,7 @@ public class Main {
 	    		}
 	    		solucion.add(copiarNodo(nodo)); //añadimos el nodo inicial
 	    		return solucion; //agrupación de todos los nodos que hemos ido haciendo
-	    	}System.out.println("Hola");
+	    	}
     	} return null;
     }
     
@@ -381,14 +380,14 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
                 	case "DEPTH":
                 		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), 1/(n.getD()+2)));
                 		break;
-                	case "UNIFORM":
+                	case "UNIFORM"://(Math.abs(n.getEstado().getValor()-a.getValor())+1) //(n.getCosto()+a.getValor())+1
                 		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), (n.getCosto()+a.getValor())+1));
                 		break;
                 	case "GREEDY":
                 		list.add(new Nodo(n, a, id, (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)));
                 		break;
-                	case "A": 
-                		list.add(new Nodo(n, a, id,/*aqui*/ (n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)+(n.getCosto()+a.getValor())+1));
+                	case "A"://((n.getEstado().getId()[1]%2)+1)*(a.getValor()+1)) //(n.getCosto()+a.getValor())+1
+                		list.add(new Nodo(n, a, id,(n.getCosto()+a.getValor())+1, a.getAccion(), n.getD()+1, calcularHeuristica(a, g), calcularHeuristica(a, g)+(n.getCosto()+a.getValor())+1));
                 		break;
         		}
     	}
@@ -412,6 +411,7 @@ private static ArrayList<Nodo> nodoSucesores (Nodo n, Grid g, String estrategia,
 	 */
 	public static int calcularHeuristica (Estado e, Grid g) {
 		return (Math.abs(g.getRows()-e.getId()[0]-1))+(Math.abs(g.getCols()-e.getId()[1]-1));
+		//return (int) (Math.sqrt((Math.pow((g.getRows()-e.getId()[0]-1), 2))+(Math.pow((g.getCols()-e.getId()[1]-1),2))));
 	}
 	/*
 	 * Metodo copiarNodo

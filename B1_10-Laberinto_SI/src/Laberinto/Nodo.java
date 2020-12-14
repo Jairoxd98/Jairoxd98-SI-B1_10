@@ -101,6 +101,7 @@ public class Nodo implements Comparable<Nodo> {
 			return 0;
 		}
 	}
+	
 
 	@Override
 	public String toString() {
